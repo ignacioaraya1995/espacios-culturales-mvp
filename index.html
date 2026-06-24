@@ -341,6 +341,172 @@
     .explore-hero p { font-size: 14.5px; margin-bottom: 18px; }
   }
 
+  .red-brief {
+    margin: 0 0 22px; padding: 24px 0 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .red-brief-grid {
+    display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(300px, .85fr);
+    gap: 28px; align-items: start;
+  }
+  .red-brief h2 {
+    font-family: var(--font-display); font-weight: 800; font-size: 30px;
+    letter-spacing: -.02em; margin: 4px 0 8px; max-width: 18ch;
+  }
+  .red-brief p { margin: 0; color: var(--text-secondary); max-width: 66ch; }
+  .red-usecases {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px; margin-top: 18px;
+  }
+  .red-usecase {
+    border: 1px solid var(--border); background: var(--warm-white);
+    border-radius: var(--r-md); padding: 13px; min-height: 112px;
+  }
+  .red-usecase b { display: block; font-size: 14px; margin-bottom: 5px; }
+  .red-usecase span { color: var(--text-secondary); font-size: 13px; }
+  .red-map {
+    border: 1px solid var(--border); border-radius: var(--r-lg);
+    overflow: hidden; background: var(--warm-white);
+  }
+  .osm-map {
+    display: block; width: 100%; height: 260px; border: 0;
+    background: var(--cream);
+  }
+  .red-map-frame { position: relative; overflow: hidden; }
+  .red-map-frame .osm-map { height: 288px; margin-bottom: -28px; }
+  .red-map-pins { position: absolute; inset: 0; pointer-events: none; }
+  .red-map-pin {
+    position: absolute; transform: translate(-50%, -100%); pointer-events: auto;
+    width: 24px; height: 24px; border: 2px solid var(--warm-white);
+    border-radius: 999px 999px 999px 3px; background: var(--charcoal);
+    box-shadow: 0 2px 8px rgba(0,0,0,.24); cursor: pointer;
+  }
+  .red-map-pin.on { background: var(--accent); transform: translate(-50%, -100%) scale(1.18); }
+  .red-map-pin:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .map-source {
+    display: block; margin-top: 8px; font-family: var(--font-mono);
+    font-size: 10px; color: var(--text-tertiary);
+  }
+  .red-map-body { padding: 15px; }
+  .red-map-body ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+  .red-map-body li { display: flex; gap: 8px; color: var(--text-secondary); font-size: 13px; }
+  .red-map-body .ic { width: 15px; height: 15px; color: var(--accent); margin-top: 2px; }
+  .red-map-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .red-map-legend button {
+    border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+    padding: 5px 8px; font: inherit; font-size: 11px; cursor: pointer;
+  }
+  .red-map-legend button.on { border-color: var(--accent); color: var(--accent); }
+  .red-inline-help { margin: 12px 0 0; color: var(--text-secondary); font-size: 13px; }
+  .red-space-grid {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px; margin-top: 18px;
+  }
+  .red-space-card {
+    border: 1px solid var(--border); border-radius: var(--r-md);
+    background: var(--warm-white); overflow: hidden; min-width: 0;
+    display: block; color: inherit; text-decoration: none; width: 100%;
+    padding: 0; text-align: left; font: inherit; cursor: pointer; appearance: none;
+  }
+  .red-space-card:hover { border-color: rgba(4,149,254,.45); }
+  .red-space-card.on { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(4,149,254,.12); }
+  .red-space-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .red-space-photo { aspect-ratio: 16/11.5; overflow: hidden; background: var(--cream); }
+  .red-space-photo img {
+    width: 100%; height: 100%; object-fit: cover; object-position: top center;
+    transform: scale(1.02);
+  }
+  .red-space-body { padding: 12px; }
+  .red-space-body b { display: block; font-size: 14px; line-height: 1.25; }
+  .red-space-body span { display: block; margin-top: 5px; color: var(--text-secondary); font-size: 12.5px; }
+  .red-space-body .mono { color: var(--text-tertiary); font-size: 10px; }
+  .red-space-detail {
+    border: 1px solid var(--border); border-radius: var(--r-md);
+    background: var(--warm-white); overflow: hidden;
+  }
+  .red-detail-card { display: grid; grid-template-columns: minmax(240px, .8fr) minmax(0, 1.2fr); }
+  .red-detail-card img { width: 100%; height: 100%; min-height: 260px; object-fit: cover; object-position: top center; }
+  .red-detail-body { padding: 18px; display: grid; gap: 10px; align-content: start; }
+  .red-detail-body h3 { margin: 0; font-size: 20px; }
+  .red-detail-body p { margin: 0; color: var(--text-secondary); }
+  .red-detail-body .red-agenda { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 4px; }
+  .red-detail-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .red-detail-list li { color: var(--text-secondary); font-size: 13px; }
+  .red-detail-list b { color: var(--charcoal); }
+  .red-agenda {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px; margin-top: 18px;
+  }
+  .red-agenda article {
+    border: 1px solid var(--border); border-radius: var(--r-md);
+    padding: 12px; background: var(--warm-white); text-decoration: none; min-width: 0;
+  }
+  .red-agenda b { display: block; font-size: 13px; line-height: 1.35; margin-bottom: 8px; }
+  .red-agenda span { display: block; color: var(--text-secondary); font-size: 12.5px; }
+  .red-agenda .tag { color: var(--accent); font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; }
+  @media (max-width: 860px) {
+    .red-brief-grid, .red-usecases, .red-agenda, .red-space-grid { grid-template-columns: 1fr; }
+    .red-detail-card { grid-template-columns: 1fr; }
+    .red-detail-body .red-agenda { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .osm-map { height: 220px; }
+    .red-map-frame .osm-map { height: 248px; }
+  }
+
+  .map-page-grid {
+    display: grid; grid-template-columns: minmax(280px, .7fr) minmax(0, 1.3fr);
+    gap: 18px; align-items: stretch;
+  }
+  .map-panel, .map-stage {
+    border: 1px solid var(--border); border-radius: var(--r-lg);
+    background: var(--warm-white); overflow: hidden;
+  }
+  .map-panel { padding: 16px; display: grid; gap: 14px; align-content: start; }
+  .map-search {
+    display: flex; align-items: center; gap: 8px; border: 1px solid var(--border);
+    border-radius: 999px; background: var(--surface); padding: 8px 11px;
+  }
+  .map-search .ic { color: var(--accent); flex-shrink: 0; }
+  .map-search input { border: 0; outline: 0; background: transparent; width: 100%; font: inherit; min-width: 0; }
+  .map-filters { display: flex; flex-wrap: wrap; gap: 7px; }
+  .map-filter {
+    border: 1px solid var(--border); background: var(--surface); border-radius: 999px;
+    padding: 7px 10px; font: inherit; font-size: 12.5px; cursor: pointer;
+  }
+  .map-filter.on { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  .map-results { display: grid; gap: 8px; max-height: 420px; overflow: auto; padding-right: 2px; }
+  .map-result {
+    border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface);
+    padding: 10px; display: grid; gap: 4px;
+  }
+  .map-result b { font-size: 13.5px; }
+  .map-result span { color: var(--text-secondary); font-size: 12.5px; }
+  .map-stage { position: relative; min-height: 620px; }
+  .map-stage .osm-map { height: 648px; margin-bottom: -28px; }
+  .map-overlay { position: absolute; inset: 0; pointer-events: none; }
+  .map-poi {
+    position: absolute; transform: translate(-50%, -100%); pointer-events: auto;
+    border: 2px solid var(--warm-white); border-radius: 999px; background: var(--charcoal);
+    color: #fff; width: 30px; height: 30px; display: grid; place-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,.24); font-size: 13px; font-weight: 800;
+  }
+  .map-poi.space { background: var(--accent); }
+  .map-poi.parking { background: #455A64; }
+  .map-poi.food { background: #C2410C; }
+  .map-poi.hotel { background: #7C3AED; }
+  .map-poi.route { background: #15803D; }
+  .map-poi.metro { background: #0F766E; }
+  .map-source.map-source-abs {
+    position: absolute; left: 12px; bottom: 10px; margin: 0;
+    background: rgba(255,255,255,.86); padding: 5px 7px; border-radius: 999px;
+  }
+  @media (max-width: 900px) {
+    .map-page-grid { grid-template-columns: 1fr; }
+    .map-stage { min-height: 440px; }
+    .map-stage .osm-map { height: 468px; }
+  }
+
   /* Airbnb-style search pill */
   .searchbar {
     display: flex; align-items: stretch; background: var(--surface);
@@ -559,6 +725,24 @@
   }
   .ideal-note .ic { color: var(--accent); flex-shrink: 0; margin-top: 1px; }
   .ideal-note b { color: var(--accent-ink); }
+
+  .sector-grid {
+    display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+    gap: 16px; align-items: stretch;
+  }
+  .sector-map {
+    min-height: 210px; border: 1px solid var(--border); border-radius: var(--r-md);
+    overflow: hidden; background: var(--cream);
+  }
+  .sector-map .osm-map { height: 238px; min-height: 238px; margin-bottom: -28px; }
+  .sector-copy { display: grid; gap: 10px; }
+  .sector-copy a { color: var(--accent); font-weight: 700; text-decoration: none; }
+  .sector-list { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+  .sector-list li { display: flex; gap: 9px; color: var(--text-secondary); font-size: 14px; }
+  .sector-list .ic { color: var(--accent); margin-top: 2px; }
+  @media (max-width: 680px) {
+    .sector-grid { grid-template-columns: 1fr; }
+  }
 
   .facts { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 4px; }
   .fact { display: flex; align-items: center; gap: 9px; font-size: 14px; }
@@ -919,6 +1103,7 @@
     width: 100%; max-width: 560px; margin: auto;
   }
   .modal.wide { max-width: 680px; }
+  .modal.red-wide { max-width: 900px; }
   @media (prefers-reduced-motion: no-preference) {
     .modal-bg.open .modal { animation: slideup .22s cubic-bezier(.22,1,.36,1); }
   }
@@ -1051,7 +1236,7 @@
 <main>
   <div class="callout">
     <p class="eyebrow accent">MVP / MOCKUP</p>
-    <p><b>Datos locales en este navegador</b> (localStorage). Pagos y chat son simulados.</p>
+    <p><b>Datos locales en este navegador</b> (localStorage). Pagos y chat son simulados. Instituciones y agenda de referencia vienen de Red Alameda Cultural; arriendo, oferta cultural, activaciones y mapa responden al feedback recibido.</p>
   </div>
 
   <!-- ============ EXPLORAR ============ -->
@@ -1093,6 +1278,44 @@
       <div class="sb-backdrop" id="sb-backdrop" hidden></div>
     </div>
 
+    <section class="red-brief" aria-labelledby="red-brief-title">
+      <div class="red-brief-grid">
+        <div>
+          <p class="eyebrow accent">RED ALAMEDA CULTURAL · 50+ INSTITUCIONES</p>
+          <h2 id="red-brief-title">Vitrina para arriendo, programación y marcas</h2>
+          <p>Feedback incorporado: cada espacio debe vender disponibilidad, oferta cultural y activaciones, cruzado con información útil del sector y rutas de turismo cultural.</p>
+          <div class="red-usecases">
+            <div class="red-usecase"><b>Arriendo venue</b><span>Ficha, aforo, precio, equipamiento, disponibilidad y contacto.</span></div>
+            <div class="red-usecase"><b>Oferta cultural</b><span>Agenda, muestras, funciones y actividades vinculadas al espacio.</span></div>
+            <div class="red-usecase"><b>Activaciones</b><span>Marcas, turismo cultural, conocimiento, comunidad y sponsors.</span></div>
+          </div>
+        </div>
+        <aside class="red-map" aria-label="Mapa sectorial propuesto">
+          <div class="red-map-frame">
+            <iframe
+              class="osm-map"
+              title="Mapa OpenStreetMap del corredor Alameda"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-70.7440%2C-33.4660%2C-70.6100%2C-33.4250&layer=mapnik"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="red-map-pins" id="red-map-pins" aria-label="Espacios en mapa"></div>
+          </div>
+          <div class="red-map-body">
+            <b>Mapa del sector por espacio</b>
+            <span class="map-source">Mapa base: © OpenStreetMap contributors / ODbL.</span>
+            <div class="red-map-legend" id="red-map-legend" aria-label="Seleccionar espacio en mapa"></div>
+            <ul>
+              <li><svg class="ic sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg><span>Cómo llegar, metro, estacionamientos y hoteles cercanos.</span></li>
+              <li><svg class="ic sm" viewBox="0 0 24 24"><path d="M4 18h16M6 18V9l6-4 6 4v9"/></svg><span>Gastronomía local y recorrido patrimonial sugerido.</span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+      <div class="red-space-grid" id="red-space-grid" aria-label="Espacios scrapeados desde Red Alameda"></div>
+      <p class="red-inline-help">Selecciona un espacio, por favor, para ver foto, agenda y fuente completa sin salir del MVP.</p>
+      <div class="red-agenda" id="red-agenda" aria-label="Programación scrapeada desde Red Alameda"></div>
+    </section>
+
     <div class="catrow" id="catrow" role="tablist" aria-label="Categorías"></div>
 
     <div class="toolbar">
@@ -1107,6 +1330,34 @@
     </div>
 
     <div class="grid-listings" id="listings-grid"></div>
+  </section>
+
+  <!-- ============ MAPA ============ -->
+  <section class="page" id="page-mapa">
+    <div class="page-head">
+      <h1>Mapa</h1>
+      <p class="sub">Mockup sectorial para ver espacios, estacionamientos, gastronomía, hotelería y recorridos cercanos.</p>
+    </div>
+    <div class="map-page-grid">
+      <aside class="map-panel" aria-label="Buscador de mapa">
+        <label class="map-search" for="map-q">
+          <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="map-q" type="search" placeholder="Buscar espacios, estacionamientos, hoteles..." autocomplete="off">
+        </label>
+        <div class="map-filters" id="map-filters" aria-label="Filtros de mapa"></div>
+        <div class="map-results" id="map-results" aria-live="polite"></div>
+      </aside>
+      <div class="map-stage" aria-label="Mockup mapa cultural">
+        <iframe
+          class="osm-map"
+          title="Mapa OpenStreetMap con espacios y servicios cercanos"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-70.7440%2C-33.4660%2C-70.6100%2C-33.4250&layer=mapnik"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="map-overlay" id="map-overlay" aria-hidden="true"></div>
+        <span class="map-source map-source-abs">Mapa base: © OpenStreetMap contributors / ODbL.</span>
+      </div>
+    </div>
   </section>
 
   <!-- ============ DETALLE ============ -->
@@ -1166,7 +1417,7 @@
 
 <footer class="app-foot">
   <!-- ponytail: footnote honesta requerida. Repite el disclaimer del banner. -->
-  <b>MVP / mockup</b> — datos locales en este navegador (localStorage). Pagos y chat son simulados.<br/>
+  <b>MVP / mockup</b> — datos locales en este navegador (localStorage). Pagos y chat son simulados. Instituciones y agenda usan fuente pública Red Alameda Cultural.<br/>
   Producción: Espacios→HivePress Listings · Reservas→RentalHive Bookings · Pagos→WooCommerce + Webpay REST / Flow / Mercado Pago / Khipu · Chat→HivePress Messages + WhatsApp Cloud API.
 </footer>
 
@@ -1259,6 +1510,17 @@
     <div class="modal-foot">
       <button class="btn" data-close>Cancelar</button>
       <button class="btn primary" id="btn-pay">Pagar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: RED ALAMEDA ============ -->
+<div class="modal-bg" id="modal-red-space">
+  <div class="modal red-wide" role="dialog" aria-modal="true" aria-labelledby="red-space-modal-title">
+    <div class="modal-head"><h2 id="red-space-modal-title">Detalle Red Alameda</h2>
+      <button class="x-close" data-close aria-label="Cerrar"><svg class="ic sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="red-space-detail" id="red-space-detail" aria-live="polite"></div>
     </div>
   </div>
 </div>
@@ -9441,6 +9703,7 @@
     whatsapp: (c)=>P('<path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5Z"/><path d="M9 8.5c.3 2.3 2.2 4.2 4.5 4.5.7.1 1.2-.4 1.3-.9.1-.4-.1-.7-.5-.9l-1-.4a.7.7 0 0 0-.8.2c-.6-.3-1.1-.8-1.4-1.4a.7.7 0 0 0 .2-.8l-.4-1c-.2-.4-.5-.6-.9-.5-.5.1-1 .6-.9 1.3Z"/>', c),
     grid:     (c)=>P('<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>', c),
     home:     (c)=>P('<path d="M4 11.5 12 4l8 7.5"/><path d="M6 10.5V20h12v-9.5"/>', c),
+    map:      (c)=>P('<path d="M9 18.5 4 21V6.5l5-2.5 6 2.5 5-2.5v14.5l-5 2.5z"/><path d="M9 4v14.5M15 6.5V21"/>', c),
     inbox:    (c)=>P('<path d="M4 4.5h16v15H4z"/><path d="M4 14h4l1.5 2.5h5L16 14h4"/>', c),
     chart:    (c)=>P('<path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-7"/>', c),
     pencil:   (c)=>P('<path d="M15.5 5.5 18.5 8.5M4 20l1-4 11-11 3 3-11 11-4 1Z"/>', c),
@@ -9470,6 +9733,50 @@
     coffee:   (c)=>P('<path d="M5 8h12v4a5 5 0 0 1-5 5H10a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 4h-2M7 3v2M11 3v2M15 3v2"/>', c),
     box:      (c)=>P('<path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9"/>', c)
   };
+  const OSM_ALAMEDA_MAP = "https://www.openstreetmap.org/export/embed.html?bbox=-70.7440%2C-33.4660%2C-70.6100%2C-33.4250&layer=mapnik";
+  const RED_MEDIA = {
+    source: "https://www.redalamedacultural.cl/secciones/espacios-culturales-7550",
+    places: [
+      { name: "Centro Cultural CIMA", modulo: "2242", address: "Merced 22, Santiago", status: "Sin actividades publicadas en el scrape del módulo", pin: [82, 31], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzc0MjgyX2NlbnRyb19jdWx0dXJhbF9jaW1hLnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsfX0=" },
+      { name: "Cine Arte Alameda", modulo: "2243", address: "Arturo Prat 33, Santiago", status: "4 actividades encontradas en el scrape del módulo", pin: [72, 51], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzg2NTQwX2NpbmVhcnRlYWxhbWVkYS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsiZml0IjoiaW5zaWRlIn0sInJvdGF0ZSI6bnVsbH19" },
+      { name: "Librería GAM", modulo: "2244", address: "Centro Gabriela Mistral", status: "Ficha pública de espacio cultural", pin: [78, 36], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzE4NzdfbGlicmVyaWFfZ2FtLnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsfX0=" },
+      { name: "Museo Nacional de Bellas Artes", modulo: "2245", address: "Parque Forestal, Santiago", status: "Ficha pública de espacio cultural", pin: [75, 25], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzY0MTk3X211c2VvX25hY19kZV9iZWxsYXNfYXJ0ZXMucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6Imluc2lkZSJ9LCJyb3RhdGUiOm51bGx9fQ==" },
+      { name: "Museo de la Solidaridad Salvador Allende", modulo: "2247", address: "República, Santiago", status: "Ficha pública de espacio cultural", pin: [57, 60], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzkyMzI1X211c2VvX3NzYS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsiZml0IjoiaW5zaWRlIn0sInJvdGF0ZSI6bnVsbH19" },
+      { name: "Centro Cultural CEINA", modulo: "2142", address: "Instituto Nacional, Santiago", status: "Ficha pública de espacio cultural", pin: [74, 56], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzQ3MTQxX2NlaW5hLnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsfX0=" }
+    ],
+    agenda: [
+      { source: "Cine Arte Alameda", title: "Ale Castillo en concierto", date: "24 jun 2026 · 20:00", place: "Arturo Prat 33, Santiago", status: "Inscripción no disponible" },
+      { source: "Cine Arte Alameda", title: "Tan inmunda y tan feliz (2022) · Director del Mes: Wincy Oyarce", date: "26 jun 2026 · 20:30", place: "Arturo Prat 33, Santiago", status: "Inscripción no disponible" },
+      { source: "Cine Arte Alameda", title: "Witness for the Prosecution (1957) · Clásicos de Matiné", date: "26 jun 2026 · 16:30", place: "Arturo Prat 33, Santiago", status: "Inscripción no disponible" },
+      { source: "Cine Arte Alameda", title: "Los fuertes (2019) · Ciclo Ópera Prima junto a ADG", date: "28 jun 2026 · 17:00", place: "Arturo Prat 33, Santiago", status: "Inscripción no disponible" },
+      { source: "Red Alameda", title: "El Reverso del Malón", date: "6 abr 2026", place: "Av. Libertador Bernardo O'Higgins 651", status: "Actividad pública" },
+      { source: "Red Alameda", title: "Literatura extranjera en la Biblioteca Nacional", date: "23 abr 2026", place: "Av. Libertador Bernardo O'Higgins 651", status: "Actividad pública" },
+      { source: "Red Alameda", title: "Un archivo en construcción: Tito Vásquez", date: "28 ago 2025", place: "Av. Libertador Bernardo O'Higgins 651", status: "Actividad pública" },
+      { source: "Red Alameda", title: "Huasos de algarrobal. 60 años de canto", date: "12 jun 2026", place: "Av. Libertador Bernardo O'Higgins 651", status: "Actividad pública" }
+    ]
+  };
+  let selectedRedModulo = "2242";
+  const MAP_FILTERS = [
+    { id: "todos", label: "Todos" },
+    { id: "space", label: "Espacios" },
+    { id: "parking", label: "Estacionamientos" },
+    { id: "metro", label: "Metro" },
+    { id: "food", label: "Gastronomía" },
+    { id: "hotel", label: "Hoteles" },
+    { id: "route", label: "Patrimonio" }
+  ];
+  const MAP_POIS = [
+    { type: "parking", label: "Parking Merced", detail: "Estacionamiento cercano a CIMA", pin: [81, 36] },
+    { type: "parking", label: "Parking Arturo Prat", detail: "Estacionamiento para Cine Arte Alameda", pin: [70, 58] },
+    { type: "metro", label: "Metro U. Católica", detail: "Acceso peatonal a GAM y Alameda", pin: [77, 42] },
+    { type: "metro", label: "Metro Santa Lucía", detail: "Conexión Bellas Artes / Centro", pin: [74, 49] },
+    { type: "food", label: "Barrio Lastarria", detail: "Cafés, restaurantes y barras", pin: [78, 31] },
+    { type: "food", label: "Gastronomía República", detail: "Opciones cerca de MSSA", pin: [55, 66] },
+    { type: "hotel", label: "Hotel Alameda", detail: "Hotelería para equipos y visitantes", pin: [68, 47] },
+    { type: "hotel", label: "Hotel Forestal", detail: "Alojamiento cercano a Bellas Artes", pin: [73, 20] },
+    { type: "route", label: "Ruta patrimonial Alameda", detail: "Recorrido sugerido: CIMA, GAM, Bellas Artes", pin: [76, 34] }
+  ];
+  const mapState = { q: "", filter: "todos" };
   // mapea equipamiento (texto) a un icono razonable
   function equipIcon(label) {
     const l = (label || "").toLowerCase();
@@ -9599,17 +9906,19 @@
   const TABS = {
     publico: [
       { id: "explorar",  label: "Explorar",     icon: "search" },
+      { id: "mapa",      label: "Mapa",         icon: "map" },
       { id: "reservas",  label: "Mis reservas", icon: "calendar" }
     ],
     admin: [
       { id: "anfitrion",   label: "Anfitrión",    icon: "chart" },
       { id: "explorar",    label: "Explorar",     icon: "search" },
+      { id: "mapa",        label: "Mapa",         icon: "map" },
       { id: "reservas",    label: "Mis reservas", icon: "inbox" },
       { id: "calendario",  label: "Calendario",   icon: "calendar" },
       { id: "mensajes",    label: "Mensajes",     icon: "chat" }
     ]
   };
-  const ALL_PAGES = ["explorar","detalle","reservas","calendario","mensajes","anfitrion"];
+  const ALL_PAGES = ["explorar","mapa","detalle","reservas","calendario","mensajes","anfitrion"];
   const isAdmin = () => DB.meta.modo === "admin";
   function defaultTab() { return isAdmin() ? "anfitrion" : "explorar"; }
 
@@ -9665,6 +9974,7 @@
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
 
     if (name === "explorar")   renderListings();
+    if (name === "mapa")       renderMapPage();
     if (name === "reservas")   renderReservas();
     if (name === "calendario") renderCalendario();
     if (name === "mensajes")   renderMensajes();
@@ -9728,6 +10038,131 @@
       '<button class="cat' + (state.cat === c.id ? " on" : "") + '" data-cat="' + c.id + '" role="tab" aria-selected="' + (state.cat === c.id) + '">' +
       ICON[c.icon]("ic") + '<span>' + esc(c.label) + '</span></button>').join("");
   }
+  function redAgendaFor(x) {
+    return RED_MEDIA.agenda.filter((a) => a.source === x.name || (x.name === "Cine Arte Alameda" && a.source === "Cine Arte Alameda"));
+  }
+  function renderRedDetail(modulo) {
+    const detail = $("#red-space-detail");
+    if (!detail) return;
+    const x = RED_MEDIA.places.find((p) => p.modulo === modulo) || RED_MEDIA.places[0];
+    const items = redAgendaFor(x);
+    const title = $("#red-space-modal-title");
+    if (title) title.textContent = x.name;
+    detail.innerHTML =
+      '<article class="red-detail-card">' +
+        '<img src="' + esc(x.img) + '" alt="Foto de ' + esc(x.name) + '" loading="lazy" decoding="async">' +
+        '<div class="red-detail-body">' +
+          '<h3>' + esc(x.name) + '</h3>' +
+          '<p>' + esc(x.address) + '</p>' +
+          '<ul class="red-detail-list">' +
+            '<li><b>Estado:</b> ' + esc(x.status) + '</li>' +
+            '<li><b>Fuente:</b> Red Alameda · módulo ' + esc(x.modulo) + '</li>' +
+            '<li><b>URL fuente:</b> redalamedacultural.cl/actividades?modulo=' + esc(x.modulo) + '</li>' +
+          '</ul>' +
+          '<div class="red-agenda">' + (items.length ? items.map((a) =>
+            '<article><span class="tag">' + esc(a.source) + '</span><b>' + esc(a.title) + '</b><span>' + esc(a.date) + '</span><span>' + esc(a.place) + '</span><span>' + esc(a.status) + '</span></article>'
+          ).join("") : '<article><span class="tag">Agenda</span><b>Sin actividades públicas scrapeadas</b><span>Este módulo no publicó actividades en el scrape revisado.</span></article>') + '</div>' +
+        '</div>' +
+      '</article>';
+  }
+  function selectRedPlace(modulo, shouldOpen) {
+    selectedRedModulo = modulo;
+    $$("#red-space-grid [data-red-place], #red-map-pins [data-red-place], #red-map-legend [data-red-place]").forEach((el) => {
+      const on = el.dataset.redPlace === modulo;
+      el.classList.toggle("on", on);
+      if (el.tagName === "BUTTON") el.setAttribute("aria-pressed", on);
+    });
+    renderRedDetail(modulo);
+    if (shouldOpen) openModal("#modal-red-space");
+  }
+  function renderRedAlameda() {
+    const spaces = $("#red-space-grid"), pins = $("#red-map-pins"), legend = $("#red-map-legend"), agenda = $("#red-agenda");
+    if (spaces) {
+      spaces.innerHTML = RED_MEDIA.places.map((x) =>
+        '<button type="button" class="red-space-card" data-red-place="' + esc(x.modulo) + '" aria-pressed="' + (x.modulo === selectedRedModulo) + '">' +
+          '<div class="red-space-photo">' +
+            '<img src="' + esc(x.img) + '" alt="Foto de ' + esc(x.name) + '" loading="lazy" decoding="async">' +
+          '</div>' +
+          '<div class="red-space-body">' +
+            '<b>' + esc(x.name) + '</b>' +
+            '<span>' + esc(x.address) + '</span>' +
+            '<span>' + esc(x.status) + '</span>' +
+            '<span class="mono">Red Alameda · módulo ' + esc(x.modulo) + '</span>' +
+          '</div>' +
+        '</button>').join("");
+      spaces.onclick = (e) => {
+        const b = e.target.closest("[data-red-place]");
+        if (b) selectRedPlace(b.dataset.redPlace, true);
+      };
+    }
+    if (pins) {
+      pins.innerHTML = RED_MEDIA.places.map((x) =>
+        '<button type="button" class="red-map-pin" style="left:' + x.pin[0] + '%;top:' + x.pin[1] + '%" data-red-place="' + esc(x.modulo) + '" aria-label="' + esc(x.name) + '" aria-pressed="' + (x.modulo === selectedRedModulo) + '"></button>'
+      ).join("");
+      pins.onclick = (e) => {
+        const b = e.target.closest("[data-red-place]");
+        if (b) selectRedPlace(b.dataset.redPlace, true);
+      };
+    }
+    if (legend) {
+      legend.innerHTML = RED_MEDIA.places.map((x) =>
+        '<button type="button" data-red-place="' + esc(x.modulo) + '" aria-pressed="' + (x.modulo === selectedRedModulo) + '">' + esc(x.name) + '</button>'
+      ).join("");
+      legend.onclick = (e) => {
+        const b = e.target.closest("[data-red-place]");
+        if (b) selectRedPlace(b.dataset.redPlace, true);
+      };
+    }
+    if (agenda) {
+      agenda.innerHTML = RED_MEDIA.agenda.map((x) =>
+        '<article>' +
+          '<span class="tag">' + esc(x.source) + '</span>' +
+          '<b>' + esc(x.title) + '</b>' +
+          '<span>' + esc(x.date) + '</span>' +
+          '<span>' + esc(x.place) + '</span>' +
+          '<span>' + esc(x.status) + '</span>' +
+        '</article>').join("");
+    }
+    selectRedPlace(selectedRedModulo, false);
+  }
+  function mapItems() {
+    const spaces = RED_MEDIA.places.map((p) => ({
+      type: "space",
+      label: p.name,
+      detail: p.address + " · Red Alameda módulo " + p.modulo,
+      pin: p.pin
+    }));
+    return spaces.concat(MAP_POIS);
+  }
+  function renderMapPage() {
+    const filters = $("#map-filters"), results = $("#map-results"), overlay = $("#map-overlay");
+    if (!filters || !results || !overlay) return;
+    filters.innerHTML = MAP_FILTERS.map((f) =>
+      '<button type="button" class="map-filter ' + (mapState.filter === f.id ? "on" : "") + '" data-map-filter="' + f.id + '">' + esc(f.label) + '</button>'
+    ).join("");
+    const q = mapState.q.toLowerCase();
+    const items = mapItems().filter((item) =>
+      (mapState.filter === "todos" || item.type === mapState.filter) &&
+      (!q || (item.label + " " + item.detail).toLowerCase().includes(q))
+    );
+    results.innerHTML = items.length ? items.map((item) =>
+      '<article class="map-result"><b>' + esc(item.label) + '</b><span>' + esc(item.detail) + '</span></article>'
+    ).join("") : '<div class="empty" style="padding:20px"><h3>Sin resultados</h3><p>Prueba con estacionamiento, hotel, metro o patrimonio.</p></div>';
+    overlay.innerHTML = items.map((item) => {
+      const mark = item.type === "space" ? "C" : item.type === "parking" ? "P" : item.type === "metro" ? "M" : item.type === "food" ? "G" : item.type === "hotel" ? "H" : "R";
+      return '<span class="map-poi ' + esc(item.type) + '" style="left:' + item.pin[0] + '%;top:' + item.pin[1] + '%" title="' + esc(item.label) + '">' + mark + '</span>';
+    }).join("");
+  }
+  $("#map-q") && $("#map-q").addEventListener("input", (e) => {
+    mapState.q = e.target.value.trim();
+    renderMapPage();
+  });
+  $("#map-filters") && $("#map-filters").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-map-filter]");
+    if (!b) return;
+    mapState.filter = b.dataset.mapFilter;
+    renderMapPage();
+  });
   $("#catrow").addEventListener("click", (e) => {
     const b = e.target.closest("[data-cat]"); if (!b) return;
     state.cat = b.dataset.cat;
@@ -9865,6 +10300,27 @@
     goTab("detalle");
   }
 
+  function sectorHTML(s) {
+    return '<div class="pdp-section">' +
+      '<h2>Mapa y entorno</h2>' +
+      '<div class="sector-grid">' +
+        '<div class="sector-map">' +
+          '<iframe class="osm-map" title="Mapa OpenStreetMap de ' + esc(s.barrio) + '" src="' + OSM_ALAMEDA_MAP + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+        '</div>' +
+        '<div class="sector-copy">' +
+          '<p class="pdp-desc" style="margin:0">Sector pensado para completar la decisión: llegada, estacionamiento, gastronomía, ruta patrimonial y hotelería cercana.</p>' +
+          '<ul class="sector-list">' +
+            '<li>' + ICON.park("ic sm") + '<span>Metro, buses y estacionamientos del barrio.</span></li>' +
+            '<li>' + ICON.coffee("ic sm") + '<span>Cafés, restaurantes y catering local.</span></li>' +
+            '<li>' + ICON.stage("ic sm") + '<span>Recorrido patrimonial y actividades cercanas.</span></li>' +
+            '<li>' + ICON.home("ic sm") + '<span>Hoteles y alojamiento para equipos o visitantes.</span></li>' +
+          '</ul>' +
+          '<span class="map-source">Mapa base: © OpenStreetMap contributors / ODbL.</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
   function renderDetalle() {
     const s = espacio(state.detalleId);
     const page = $("#page-detalle");
@@ -9926,6 +10382,7 @@
             '<p class="pdp-desc" style="margin-top:16px">' + esc(s.descripcion) + '</p>' +
             (s.ejemplo ? '<div class="ideal-note">' + ICON.sparkle("ic sm") + '<span><b>Ideal para:</b> ' + esc(s.ejemplo) + '</span></div>' : '') +
           '</div>' +
+          sectorHTML(s) +
           '<div class="pdp-section"><h2>Equipamiento</h2>' + amenities + '</div>' +
           (reglasHtml ? '<div class="pdp-section"><h2>Reglas del espacio</h2><ul class="rules-list">' + reglasHtml + '</ul></div>' : '') +
           '<div class="pdp-section">' +
@@ -10717,6 +11174,8 @@
 
   function renderAll() {
     populateTipoSelects();
+    renderRedAlameda();
+    renderMapPage();
     renderCatrow();
     renderListings();
     renderReservas();

@@ -645,6 +645,42 @@
   .bk-warn.show { display: block; }
   .bk-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 10px; }
 
+  /* ---- Barra de reserva inferior (mobile) + booking como bottom-sheet ---- */
+  .pdp-bottombar { display: none; }
+  .booking .bk-sheet-head { display: none; }
+  .pdp-sheet-backdrop { display: none; }
+  @media (max-width: 920px) {
+    .pdp-bottombar {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-bottomnav);
+      background: var(--warm-white); border-top: 1px solid var(--border);
+      padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
+      box-shadow: 0 -6px 24px rgba(0,0,0,.07);
+    }
+    .pdp-bottombar .bb-price b { font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--accent); letter-spacing: -.02em; }
+    .pdp-bottombar .bb-price .per { color: var(--text-secondary); font-size: 13px; }
+    .pdp-bottombar .bb-price .bb-sub { display: block; font-size: 11.5px; color: var(--text-tertiary); }
+    .pdp-bottombar .btn { height: 50px; padding: 0 26px; font-size: 16px; }
+    #page-detalle.active { padding-bottom: 96px; }
+    /* en el detalle la barra de reserva reemplaza al bottom-nav (evita solape) */
+    body[data-page="detalle"] .bottomnav { display: none; }
+    .pdp-right { display: none; }
+    .pdp-right.sheet {
+      display: block; position: fixed; left: 0; right: 0; bottom: 0; top: auto;
+      z-index: var(--z-sheet-bg); transform: translateY(110%);
+      transition: transform .26s cubic-bezier(.22,1,.36,1); max-height: 92vh; overflow-y: auto;
+    }
+    .pdp-right.sheet.open { transform: translateY(0); }
+    .pdp-right.sheet .booking {
+      position: static; border-radius: var(--r-lg) var(--r-lg) 0 0; box-shadow: var(--shadow-3);
+      border: none; padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
+    }
+    .booking .bk-sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .booking .bk-sheet-head .bk-sheet-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+    .pdp-sheet-backdrop { display: block; position: fixed; inset: 0; z-index: 99; background: rgba(20,16,14,.42); opacity: 0; transition: opacity .2s; }
+    .pdp-sheet-backdrop.show { opacity: 1; }
+  }
+
   /* ====================================================================
      INPUTS / FORMS
      ==================================================================== */
@@ -973,6 +1009,8 @@
   @media (max-width: 760px) { .toast { bottom: 92px; } }
 
   .hidden { display: none !important; }
+  /* el atributo [hidden] siempre gana (evita que backdrops mobile intercepten clics) */
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
@@ -1025,7 +1063,16 @@
       <p class="eyebrow accent">ESPACIOS CULTURALES · CHILE</p>
       <h1>Arrienda <em>espacios culturales</em></h1>
       <p>Galerías, salas de ensayo, patios patrimoniales y talleres en Santiago y regiones.</p>
+      <!-- trigger compacto (sólo mobile): abre el buscador como bottom-sheet -->
+      <button type="button" class="search-trigger" id="search-trigger" aria-expanded="false" aria-controls="searchbar">
+        <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <span class="st-text"><b>Buscar espacios</b><small>Comuna · tipo · fecha</small></span>
+      </button>
       <form class="searchbar" id="searchbar" role="search">
+        <div class="sb-sheet-head">
+          <span class="sb-sheet-title">Buscar espacios</span>
+          <button type="button" class="x-close" id="sb-close" aria-label="Cerrar"><svg class="ic sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
         <div class="sb-seg" onclick="this.querySelector('input').focus()">
           <label for="s-donde">Dónde</label>
           <input type="text" id="s-donde" placeholder="Comuna o barrio" autocomplete="off" />
@@ -1040,8 +1087,10 @@
         </div>
         <button class="sb-go" type="submit" aria-label="Buscar">
           <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="sb-go-label">Buscar</span>
         </button>
       </form>
+      <div class="sb-backdrop" id="sb-backdrop" hidden></div>
     </div>
 
     <div class="catrow" id="catrow" role="tablist" aria-label="Categorías"></div>
@@ -9612,6 +9661,7 @@
       const el = $("#page-" + p);
       if (el) el.classList.toggle("active", p === name);
     });
+    document.body.dataset.page = name; // en mobile, el detalle oculta el bottom-nav (lo reemplaza la barra de reserva)
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
 
     if (name === "explorar")   renderListings();
@@ -9685,6 +9735,27 @@
     $("#s-tipo").value = state.tipo;
     renderCatrow(); renderListings();
   });
+  // ---- buscador mobile: bottom-sheet (trigger compacto "Buscar espacios") ----
+  function openSearchSheet() {
+    const sb = $("#searchbar"), bd = $("#sb-backdrop");
+    if (!sb) return;
+    sb.classList.add("open");
+    if (bd) { bd.hidden = false; requestAnimationFrame(() => bd.classList.add("show")); }
+    const tr = $("#search-trigger"); if (tr) tr.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+  function closeSearchSheet() {
+    const sb = $("#searchbar"), bd = $("#sb-backdrop");
+    if (!sb) return;
+    sb.classList.remove("open");
+    if (bd) { bd.classList.remove("show"); setTimeout(() => { bd.hidden = true; }, 220); }
+    const tr = $("#search-trigger"); if (tr) tr.setAttribute("aria-expanded", "false");
+    if (!$$(".modal-bg.open").length) document.body.style.overflow = "";
+  }
+  if ($("#search-trigger")) $("#search-trigger").addEventListener("click", openSearchSheet);
+  if ($("#sb-close")) $("#sb-close").addEventListener("click", closeSearchSheet);
+  if ($("#sb-backdrop")) $("#sb-backdrop").addEventListener("click", closeSearchSheet);
+
   $("#searchbar").addEventListener("submit", (e) => {
     e.preventDefault();
     state.comuna = $("#s-donde").value.trim();
@@ -9692,6 +9763,9 @@
     state.fecha = $("#s-fecha").value;
     state.cat = state.tipo || "todos";
     renderCatrow(); renderListings();
+    closeSearchSheet();
+    const t = $("#search-trigger .st-text small");
+    if (t) t.textContent = [state.comuna || "Cualquier comuna", state.tipo || "todos", state.fecha || "fecha flexible"].join(" · ");
   });
   $("#s-tipo").addEventListener("change", () => {
     state.tipo = $("#s-tipo").value; state.cat = state.tipo || "todos"; renderCatrow(); renderListings();
@@ -10627,7 +10701,11 @@
     });
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") $$(".modal-bg.open").forEach((m) => closeModal("#" + m.id));
+    if (e.key === "Escape") {
+      $$(".modal-bg.open").forEach((m) => closeModal("#" + m.id));
+      if ($("#searchbar") && $("#searchbar").classList.contains("open")) closeSearchSheet();
+      if ($("#pdp-right") && $("#pdp-right").classList.contains("open")) closeBookingSheet();
+    }
   });
 
   /* ====================================================================

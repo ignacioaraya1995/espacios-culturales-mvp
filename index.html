@@ -1242,44 +1242,24 @@
   <!-- ============ EXPLORAR ============ -->
   <section class="page active" id="page-explorar">
     <div class="explore-hero hero-tool">
-      <!-- MVP tool-first: la home ES la herramienta; la vitrina va abajo, el video también -->
-      <p class="eyebrow accent">ESPACIOS CULTURALES · CHILE</p>
-      <h1>Arma tu evento en <em>2 minutos</em></h1>
-      <p>Responde unas pocas preguntas y genera al instante una pre-propuesta con 3–5 espacios culturales — tarifas reales, confirmación en 24–48 h.</p>
-      <div class="wz-panel" id="wz-panel">
-        <div class="wz-progress"><div class="wz-bar" id="wz-bar" style="width:25%"></div></div>
-        <div class="wz-inline-body" id="wz-body"></div>
+      <!-- MVP tool-first: UNA herramienta a ancho completo; la vitrina y el buscador viven abajo -->
+      <div class="ht-left">
+        <p class="eyebrow accent">ESPACIOS CULTURALES · CHILE</p>
+        <h1>Arma tu evento en <em>2 minutos</em></h1>
+        <p>Responde unas pocas preguntas y genera al instante una pre-propuesta con 3–5 espacios culturales.</p>
+        <ul class="ht-trust">
+          <li>✓ Gratis — solo pagas al espacio</li>
+          <li>✓ Propuesta al instante, con costos estimados</li>
+          <li>✓ Confirmación de disponibilidad en 24–48 h</li>
+        </ul>
+        <button type="button" class="ev-lost" id="ev-lost">¿Prefieres hablar con alguien? Escríbenos por WhatsApp →</button>
       </div>
-      <button type="button" class="ev-lost" id="ev-lost">¿Prefieres hablar con alguien? Cuéntanos por WhatsApp →</button>
-      <p class="explore-alt">O mira primero: explora los espacios y guarda tus favoritos ↓</p>
-      <!-- trigger compacto (sólo mobile): abre el buscador como bottom-sheet -->
-      <button type="button" class="search-trigger" id="search-trigger" aria-expanded="false" aria-controls="searchbar">
-        <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <span class="st-text"><b>Buscar espacios</b><small>Comuna · tipo · fecha</small></span>
-      </button>
-      <form class="searchbar" id="searchbar" role="search">
-        <div class="sb-sheet-head">
-          <span class="sb-sheet-title">Buscar espacios</span>
-          <button type="button" class="x-close" id="sb-close" aria-label="Cerrar"><svg class="ic sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <div class="ht-right">
+        <div class="wz-panel" id="wz-panel">
+          <div class="wz-progress"><div class="wz-bar" id="wz-bar" style="width:25%"></div></div>
+          <div class="wz-inline-body" id="wz-body"></div>
         </div>
-        <div class="sb-seg" onclick="this.querySelector('input').focus()">
-          <label for="s-donde">Dónde</label>
-          <input type="text" id="s-donde" placeholder="Comuna o barrio" autocomplete="off" />
-        </div>
-        <div class="sb-seg">
-          <label for="s-tipo">Qué tipo</label>
-          <select id="s-tipo"><option value="">Cualquier espacio</option></select>
-        </div>
-        <div class="sb-seg" onclick="this.querySelector('input').focus()">
-          <label for="s-fecha">Fecha</label>
-          <input type="date" id="s-fecha" />
-        </div>
-        <button class="sb-go" type="submit" aria-label="Buscar">
-          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <span class="sb-go-label">Buscar</span>
-        </button>
-      </form>
-      <div class="sb-backdrop" id="sb-backdrop" hidden></div>
+      </div>
     </div>
 
     <!-- video showcase: baja de héroe a banda (el protagonista ahora es la herramienta) -->
@@ -1327,6 +1307,35 @@
     </section>
 
     <div class="catrow" id="catrow" role="tablist" aria-label="Categorías"></div>
+
+    <!-- buscador de la vitrina (reubicado desde el hero: una sola herramienta arriba) -->
+    <button type="button" class="search-trigger" id="search-trigger" aria-expanded="false" aria-controls="searchbar">
+      <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <span class="st-text"><b>Buscar espacios</b><small>Comuna · tipo · fecha</small></span>
+    </button>
+    <form class="searchbar" id="searchbar" role="search">
+      <div class="sb-sheet-head">
+        <span class="sb-sheet-title">Buscar espacios</span>
+        <button type="button" class="x-close" id="sb-close" aria-label="Cerrar"><svg class="ic sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <div class="sb-seg" onclick="this.querySelector('input').focus()">
+        <label for="s-donde">Dónde</label>
+        <input type="text" id="s-donde" placeholder="Comuna o barrio" autocomplete="off" />
+      </div>
+      <div class="sb-seg">
+        <label for="s-tipo">Qué tipo</label>
+        <select id="s-tipo"><option value="">Cualquier espacio</option></select>
+      </div>
+      <div class="sb-seg" onclick="this.querySelector('input').focus()">
+        <label for="s-fecha">Fecha</label>
+        <input type="date" id="s-fecha" />
+      </div>
+      <button class="sb-go" type="submit" aria-label="Buscar">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <span class="sb-go-label">Buscar</span>
+      </button>
+    </form>
+    <div class="sb-backdrop" id="sb-backdrop" hidden></div>
 
     <div class="toolbar">
       <div class="result-count" id="result-count" aria-live="polite"></div>
@@ -1478,12 +1487,20 @@
 
 <!-- ============ MVP WIZARD: crear tu propuesta (test JTBD, fase 0) ============ -->
 <style>
-  /* hero-herramienta: el wizard es el protagonista */
-  .explore-hero.hero-tool { min-height: 0; justify-content: flex-start;
+  /* hero-herramienta: UNA herramienta, ancho completo, dos columnas en desktop */
+  .explore-hero.hero-tool { min-height: 0;
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 48px; align-items: center; padding: 56px 48px;
     background: linear-gradient(180deg, #1b222b, var(--charcoal, #14181d)); }
+  @media (max-width: 920px) {
+    .explore-hero.hero-tool { grid-template-columns: 1fr; gap: 22px; padding: 30px 18px 26px; }
+  }
+  .ht-trust { list-style: none; margin: 16px 0 4px; padding: 0;
+    display: flex; flex-direction: column; gap: 7px;
+    color: rgba(255,255,255,.85); font-size: 14px; }
   .wz-panel { background: var(--bg, #fff); color: var(--ink, #14181d);
-    border-radius: 16px; max-width: 620px; width: 100%;
-    box-shadow: 0 16px 50px rgba(0,0,0,.35); overflow: hidden; margin-top: 6px; }
+    border-radius: 16px; width: 100%;
+    box-shadow: 0 16px 50px rgba(0,0,0,.35); overflow: hidden; }
   .wz-panel p { color: var(--muted, #667); }
   .wz-inline-body { padding: 22px 24px 24px; }
   .wz-step .btn.block { white-space: normal; line-height: 1.3; }
@@ -1506,6 +1523,7 @@
   .prop-acts li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--line, #e3e5e8); font-size: 13.5px; }
   .prop-acts em { color: var(--muted, #667); font-style: normal; white-space: nowrap; }
   .prop-next { margin-top: 18px; padding: 12px 14px; background: var(--surface, #f2f6ff); border-radius: 10px; font-size: 13.5px; }
+  .pe-cerca { margin: 10px 0 0; font-size: 12.5px; color: var(--muted, #667); border-top: 1px dashed var(--line, #e3e5e8); padding-top: 8px; }
   @media (max-width: 560px) { .wz-inline-body { padding: 16px 16px 18px; } }
   .explore-alt { font-size: 13px; color: rgba(255,255,255,.75) !important; margin-top: 14px !important; }
   .video-band { position: relative; margin: 26px 0; border-radius: var(--r-lg, 16px); overflow: hidden; }
@@ -1528,8 +1546,13 @@
   .wz-step .wz-sub { color: var(--muted, #667); font-size: 13.5px; margin: 0 0 18px; }
   .wz-chips { display: flex; flex-wrap: wrap; gap: 10px; }
   .wz-chips button { appearance: none; cursor: pointer; font: inherit; font-size: 15px;
-    border: 1.5px solid var(--line, #ddd); background: var(--bg, #fff); border-radius: 12px; padding: 12px 16px; }
-  .wz-chips button.on, .wz-chips button:hover { border-color: var(--accent, #2456e6); }
+    border: 1.5px solid var(--line, #ddd); background: var(--bg, #fff); border-radius: 12px; padding: 12px 16px;
+    transition: background .15s, border-color .15s, color .15s, box-shadow .15s; }
+  .wz-chips button:hover { border-color: var(--accent, #2456e6); }
+  /* seleccionado ≠ hover: relleno sólido, sin ambigüedad */
+  .wz-chips button.on { background: var(--accent, #2456e6); border-color: var(--accent, #2456e6);
+    color: #fff; font-weight: 700; box-shadow: 0 4px 16px rgba(36, 86, 230, .35); }
+  .wz-chips button.on::before { content: "✓ "; }
   .wz-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; gap: 10px; }
   .wz-skip { appearance: none; background: none; border: none; cursor: pointer; font: inherit;
     color: var(--muted, #667); font-size: 13.5px; text-decoration: underline; text-underline-offset: 3px; padding: 6px 0; }
@@ -11309,7 +11332,7 @@
     { id: "presupuesto", skip: "Prefiero que me propongan", render: () =>
         '<h3>¿Presupuesto del evento?</h3>' +
         '<p class="wz-sub">Grandes eventos en espacios culturales: la producción completa (espacio + técnica + catering) va típicamente de $2M a $10M+ por jornada.</p>' +
-        chips(["$2M – $5,5M", "$5,5M – $10M", "Más de $10M", "Menos de $2M"], "presupuesto", true) },
+        chips(["Menos de $2M", "$2M – $5M", "$5M – $10M", "$10M – $20M", "Más de $20M"], "presupuesto", true) },
     { id: "necesidades", skip: "Nada especial, continuar", render: () =>
         '<h3>¿Qué necesita tu evento? <span style="font-weight:400;font-size:13px;color:var(--muted,#667)">(opcional)</span></h3><p class="wz-sub">Marca todo lo que aplique.</p>' +
         '<div class="wz-chips">' + ["Sonido", "Proyector", "Catering / cocina", "Terraza o exterior", "Accesibilidad", "Estacionamiento"].map((o) =>
@@ -11404,11 +11427,12 @@
       toast("Perfecto — el equipo te contactará en 24–48 h", "check");
       return;
     }
+    if (e.target.closest("#wz-mapa")) { track("wz_mapa"); goTab("mapa"); return; }
   });
 
   /* Matching determinístico (sin AI): capacidad → presupuesto → necesidades → favoritos primero */
   const WZ_PAX_MIN = { "Menos de 30": 0, "30–80": 30, "80–150": 80, "150+": 150 };
-  const WZ_BUDGET_MAX = { "Menos de $2M": 2e6, "$2M – $5,5M": 5.5e6, "$5,5M – $10M": 10e6, "Más de $10M": Infinity };
+  const WZ_BUDGET_MAX = { "Menos de $2M": 2e6, "$2M – $5M": 5e6, "$5M – $10M": 10e6, "$10M – $20M": 20e6, "Más de $20M": Infinity };
   const WZ_KEYWORDS = { "Sonido": /sonido|audio|parlante/i, "Proyector": /proyector|proyecci/i, "Catering / cocina": /cocina|catering|barra/i,
     "Terraza o exterior": /terraza|patio|jard|explanada|exterior/i, "Accesibilidad": /accesib|rampa/i, "Estacionamiento": /estacionamiento|parking/i };
   function wzMatch() {
@@ -11473,7 +11497,8 @@
         "<div><h4>" + esc(s.nombre) + "</h4><p class='pe-meta'>" + esc(s.comuna) + " · " + esc(s.tipo) + " · hasta " + s.capacidad + " personas · " + s.m2 + " m²</p></div></div>" +
         '<p class="pe-est">Costo estimado del evento: <b>' + clp(est[0]) + " – " + clp(est[1]) + "</b> <span>(arriendo " + clp(s.precio_dia) + "/día + costos del espacio + producción estimada)</span></p>" +
         '<div class="pe-pc"><div><span class="pe-tag ok">A favor</span><ul>' + pc.pros.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul></div>" +
-        (pc.contras.length ? '<div><span class="pe-tag warn">A considerar</span><ul>' + pc.contras.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul></div>" : "") + "</div></article>";
+        (pc.contras.length ? '<div><span class="pe-tag warn">A considerar</span><ul>' + pc.contras.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul></div>" : "") + "</div>" +
+        '<p class="pe-cerca">📍 ' + (s.barrio ? "Barrio " + esc(s.barrio) : esc(s.comuna)) + ": restaurantes, cafés y bares a pasos — para el cóctel previo, el after o el brunch del día siguiente.</p></article>";
     };
     const acts = wzActs();
     $("#wz-body").innerHTML = '<div class="wz-step">' +
@@ -11482,6 +11507,7 @@
       "<h4 class='prop-h'>Te proponemos estos " + sel.length + " lugares</h4>" + sel.map(bloque).join("") +
       "<h4 class='prop-h'>Actividades para hacerlo memorable</h4>" +
       '<ul class="prop-acts">' + acts.map((a) => "<li><span>" + a[0] + "</span><em>" + a[1] + "</em></li>").join("") + "</ul>" +
+      '<button type="button" class="wz-skip" id="wz-mapa" style="margin-top:8px">Ver qué hay cerca de cada espacio en el mapa (comida, hoteles, metro) →</button>' +
       '<div class="prop-next"><b>✅ Tu solicitud ya fue enviada a nuestro equipo.</b> Te contactaremos en 24–48 h para confirmar disponibilidad y afinar el detalle. ¿Cómo quieres seguir?</div>' +
       '<button class="btn primary lg block" id="wz-ahora" style="margin-top:12px">Quiero partir ahora — hablemos →</button>' +
       '<button class="btn lg block" id="wz-pdf" style="margin-top:10px">Descargar propuesta (PDF) ↓</button>' +
@@ -11500,6 +11526,7 @@
       "<div><h2>" + esc(s.nombre) + "</h2>" +
       "<p class='meta'>" + esc(s.comuna) + (s.barrio ? " · " + esc(s.barrio) : "") + " · " + esc(s.tipo) + " · hasta " + s.capacidad + " personas · " + s.m2 + " m²</p>" +
       "<p class='precio'>Costo estimado del evento: " + clp(est[0]) + " – " + clp(est[1]) + "</p>" +
+      "<p class='eq'>📍 " + (s.barrio ? "Barrio " + esc(s.barrio) : esc(s.comuna)) + ": restaurantes, cafés y bares a pasos para antes o después del evento.</p>" +
       "<p class='eq'>Arriendo: " + clp(s.precio_dia) + " / día · " + clp(s.precio_hora) + " / hora" +
       ((s.costos || []).length ? " · Adicionales: " + s.costos.map((c) => esc(c.concepto) + " " + clp(c.monto)).join(", ") : "") + "</p>" +
       (pc.pros.length ? "<p class='eq'><b>A favor:</b> " + pc.pros.map(esc).join(" · ") + "</p>" : "") +

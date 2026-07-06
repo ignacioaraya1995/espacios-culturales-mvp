@@ -1241,23 +1241,17 @@
 
   <!-- ============ EXPLORAR ============ -->
   <section class="page active" id="page-explorar">
-    <div class="explore-hero">
-      <!-- ponytail: video hero = asset local hermano (hero.mp4). Produccion: video en CDN / WP media. -->
-      <video class="hero-vid" src="hero.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
-      <div class="hero-scrim"></div>
+    <div class="explore-hero hero-tool">
+      <!-- MVP tool-first: la home ES la herramienta; la vitrina va abajo, el video también -->
       <p class="eyebrow accent">ESPACIOS CULTURALES · CHILE</p>
-      <h1>El espacio cultural para tu <em>próximo evento</em></h1>
-      <p>Cuéntanos qué necesitas y te proponemos 3–5 espacios con tarifas y condiciones en 48 horas.</p>
-      <!-- MVP wizard: puerta 1 — tipo de evento (un tap = paso 1 del brief) -->
-      <div class="ev-chips" id="ev-chips" role="group" aria-label="¿Qué evento quieres hacer?">
-        <button type="button" data-ev="Fiesta corporativa">🎉 Fiesta corporativa</button>
-        <button type="button" data-ev="Lanzamiento">🚀 Lanzamiento</button>
-        <button type="button" data-ev="Cena privada">🍽️ Cena privada</button>
-        <button type="button" data-ev="Matrimonio íntimo">💍 Matrimonio íntimo</button>
-        <button type="button" data-ev="Concierto privado">🎤 Concierto</button>
-        <button type="button" data-ev="Otro">✨ Otro</button>
+      <h1>Arma tu evento en <em>2 minutos</em></h1>
+      <p>Responde unas pocas preguntas y genera al instante una pre-propuesta con 3–5 espacios culturales — tarifas reales, confirmación en 24–48 h.</p>
+      <div class="wz-panel" id="wz-panel">
+        <div class="wz-progress"><div class="wz-bar" id="wz-bar" style="width:25%"></div></div>
+        <div class="wz-inline-body" id="wz-body"></div>
       </div>
-      <button type="button" class="ev-lost" id="ev-lost">¿No sabes por dónde partir? Cuéntanos por WhatsApp →</button>
+      <button type="button" class="ev-lost" id="ev-lost">¿Prefieres hablar con alguien? Cuéntanos por WhatsApp →</button>
+      <p class="explore-alt">O mira primero: explora los espacios y guarda tus favoritos ↓</p>
       <!-- trigger compacto (sólo mobile): abre el buscador como bottom-sheet -->
       <button type="button" class="search-trigger" id="search-trigger" aria-expanded="false" aria-controls="searchbar">
         <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
@@ -1287,6 +1281,12 @@
       </form>
       <div class="sb-backdrop" id="sb-backdrop" hidden></div>
     </div>
+
+    <!-- video showcase: baja de héroe a banda (el protagonista ahora es la herramienta) -->
+    <section class="video-band" aria-label="Espacios culturales de Santiago">
+      <video src="hero.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+      <div class="vb-caption">Espacios con historia, para eventos que se recuerdan</div>
+    </section>
 
     <section class="red-brief" aria-labelledby="red-brief-title">
       <div class="red-brief-grid">
@@ -1478,16 +1478,43 @@
 
 <!-- ============ MVP WIZARD: crear tu propuesta (test JTBD, fase 0) ============ -->
 <style>
-  .ev-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; max-width: 640px; }
-  .ev-chips button {
-    appearance: none; cursor: pointer; font: inherit; font-size: 15px; font-weight: 700;
-    color: #14181d; background: #fff; border: none;
-    border-radius: 999px; padding: 12px 18px; box-shadow: 0 2px 14px rgba(0,0,0,.28);
-    transition: transform .12s;
-  }
-  .ev-chips button:hover, .ev-chips button:focus-visible { transform: translateY(-2px); }
+  /* hero-herramienta: el wizard es el protagonista */
+  .explore-hero.hero-tool { min-height: 0; justify-content: flex-start;
+    background: linear-gradient(180deg, #1b222b, var(--charcoal, #14181d)); }
+  .wz-panel { background: var(--bg, #fff); color: var(--ink, #14181d);
+    border-radius: 16px; max-width: 620px; width: 100%;
+    box-shadow: 0 16px 50px rgba(0,0,0,.35); overflow: hidden; margin-top: 6px; }
+  .wz-panel p { color: var(--muted, #667); }
+  .wz-inline-body { padding: 22px 24px 24px; }
+  .wz-step .btn.block { white-space: normal; line-height: 1.3; }
+  .wz-panel.wide { max-width: 860px; }
+  .prop-h { font-size: 14px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted, #667); margin: 22px 0 10px; }
+  .prop-esp { border: 1px solid var(--line, #e3e5e8); border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
+  .pe-head { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+  .pe-swatch { flex: 0 0 52px; height: 52px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .pe-head h4 { margin: 0; font-size: 16px; }
+  .pe-meta { margin: 2px 0 0; font-size: 12.5px; color: var(--muted, #667); }
+  .pe-est { font-size: 13.5px; margin: 6px 0 10px; }
+  .pe-est span { color: var(--muted, #667); font-size: 12px; }
+  .pe-pc { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .pe-pc { grid-template-columns: 1fr; } }
+  .pe-tag { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .pe-tag.ok { color: #1e7a45; } .pe-tag.warn { color: #a06a00; }
+  .pe-pc ul { margin: 4px 0 0; padding-left: 16px; font-size: 12.5px; color: var(--ink, #223); }
+  .pe-pc li { margin: 2px 0; }
+  .prop-acts { list-style: none; margin: 0; padding: 0; }
+  .prop-acts li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--line, #e3e5e8); font-size: 13.5px; }
+  .prop-acts em { color: var(--muted, #667); font-style: normal; white-space: nowrap; }
+  .prop-next { margin-top: 18px; padding: 12px 14px; background: var(--surface, #f2f6ff); border-radius: 10px; font-size: 13.5px; }
+  @media (max-width: 560px) { .wz-inline-body { padding: 16px 16px 18px; } }
+  .explore-alt { font-size: 13px; color: rgba(255,255,255,.75) !important; margin-top: 14px !important; }
+  .video-band { position: relative; margin: 26px 0; border-radius: var(--r-lg, 16px); overflow: hidden; }
+  .video-band video { display: block; width: 100%; height: 300px; object-fit: cover; }
+  .vb-caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 24px 18px;
+    color: #fff; font-weight: 700; font-size: 18px;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,.65)); }
   .ev-lost { appearance: none; background: none; border: none; cursor: pointer; font: inherit;
-    color: rgba(255,255,255,.85); font-size: 13px; margin-top: 12px; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
+    color: rgba(255,255,255,.85); font-size: 13px; margin-top: 14px; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
   .prop-bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; z-index: 60;
     display: flex; align-items: center; gap: 12px; background: var(--ink, #14181d); color: #fff;
     border-radius: 999px; padding: 10px 12px 10px 20px; box-shadow: 0 8px 30px rgba(0,0,0,.35); }
@@ -1516,14 +1543,7 @@
   <span class="pb-txt" id="prop-bar-txt">Mi propuesta (0)</span>
   <button class="btn primary" id="prop-bar-cta">Pedir propuesta →</button>
 </div>
-<div class="modal-bg" id="modal-wizard">
-  <div class="modal wz" role="dialog" aria-modal="true" aria-labelledby="wz-title">
-    <div class="modal-head"><h2 id="wz-title">Arma tu propuesta</h2>
-      <button class="x-close" data-close aria-label="Cerrar"><svg class="ic sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
-    <div class="wz-progress"><div class="wz-bar" id="wz-bar" style="width:25%"></div></div>
-    <div class="modal-body" id="wz-body"></div>
-  </div>
-</div>
+<!-- (wizard ahora vive inline en el hero de Explorar — ver .wz-panel) -->
 
 <!-- ============ MODAL: DATOS CLIENTE (reservar, público) ============ -->
 <div class="modal-bg" id="modal-cliente">
@@ -11316,6 +11336,7 @@
   }
   function wzRender() {
     const p = WZ_PASOS[wz.paso];
+    $("#wz-panel").classList.remove("wide");
     // la barra nunca parte en 0: efecto endowed progress (HeadBox parte en 27%)
     $("#wz-bar").style.width = (25 + (wz.paso / WZ_PASOS.length) * 75) + "%";
     $("#wz-body").innerHTML = '<div class="wz-step">' + (wz.paso === 0 ? wzFavsHtml() : "") + p.render() +
@@ -11339,8 +11360,9 @@
   }
   function openWizard(puerta) {
     track("puerta_" + puerta);
-    wz.paso = (puerta === "hero" && wz.data.tipo) ? 1 : 0;
-    openModal("#modal-wizard"); wzRender();
+    goTab("explorar");
+    wzRender();
+    $("#wz-panel").scrollIntoView({ behavior: "smooth", block: "center" });
   }
   $("#wz-body").addEventListener("click", (e) => {
     const set = e.target.closest("[data-wz-set]");
@@ -11366,19 +11388,20 @@
       return;
     }
     if (e.target.closest("#wz-pdf")) { wzAbrirPropuesta(); track("wz_pdf"); return; }
-    if (e.target.closest("#wz-wa")) {
-      const d = wz.data, sel = wzMatch();
-      const msg = "Hola! Generé mi pre-propuesta en el sitio:\n" +
-        "• Tipo: " + (d.tipo || "—") + "\n• Personas: " + (d.pax || "—") + "\n" +
-        "• Fecha: " + (d.fecha || "sin definir") + (d.flex ? " (flexible)" : "") + "\n" +
-        "• Presupuesto: " + (d.presupuesto || "abierto — que me propongan") + "\n" +
-        ((d.necesidades || []).length ? "• Necesita: " + d.necesidades.join(", ") + "\n" : "") +
-        "• Urgencia: " + (d.urgencia || "—") + "\n" +
-        "• Espacios de mi pre-propuesta: " + sel.map((s) => s.nombre).join(", ") + "\n" +
-        "• Nombre: " + d.nombre + "\n• WhatsApp: " + d.fono + (d.email ? "\n• Email: " + d.email : "");
+    if (e.target.closest("#wz-ahora")) {
+      const d = wz.data, sel = wzMatch().slice(0, 3);
+      const msg = "Hola! Generé mi propuesta en el sitio y quiero partir ahora:\n" +
+        "• " + (d.tipo || "Evento") + " · " + (d.pax || "—") + " personas · " + (d.fecha || "fecha por definir") + (d.flex ? " (flexible)" : "") + "\n" +
+        "• Presupuesto: " + (d.presupuesto || "abierto") + "\n" +
+        "• Espacios propuestos: " + sel.map((s) => s.nombre).join(", ") + "\n" +
+        "• " + d.nombre + " · " + d.fono + (d.email ? " · " + d.email : "");
       window.open("https://wa.me/" + WZ_DESTINO + "?text=" + encodeURIComponent(msg), "_blank");
-      track("wz_enviado");
-      toast("¡Enviado! Te confirmamos disponibilidad en 24–48 h", "check");
+      track("wz_ahora");
+      return;
+    }
+    if (e.target.closest("#wz-espera")) {
+      track("wz_espera");
+      toast("Perfecto — el equipo te contactará en 24–48 h", "check");
       return;
     }
   });
@@ -11403,30 +11426,85 @@
     if (list.length < 3) list = DB.espacios.slice();
     return list.sort((a, b) => puntaje(b) - puntaje(a)).slice(0, 5);
   }
+  /* Propuesta enriquecida: estimación de costos, pros/contras y actividades — todo determinístico */
+  const WZ_PROD_EST = { "Menos de 30": [3e5, 8e5], "30–80": [8e5, 2e6], "80–150": [1.5e6, 4e6], "150+": [3e6, 8e6] };
+  const WZ_ACTIVIDADES = {
+    "Fiesta corporativa": [["🎧 DJ set o banda en vivo", "desde $600.000"], ["🍸 Barra de coctelería", "desde $8.000/persona"], ["🎨 Recorrido guiado por la galería", "desde $150.000"]],
+    "Lanzamiento": [["🎤 Concierto íntimo de artista local", "desde $800.000"], ["🥂 Cóctel de bienvenida", "desde $10.000/persona"], ["📸 Cobertura fotográfica", "desde $250.000"]],
+    "Cena privada": [["🎷 Trío de jazz en vivo", "desde $500.000"], ["🍷 Maridaje con sommelier", "desde $15.000/persona"], ["🕯️ Ambientación e iluminación", "desde $300.000"]],
+    "Matrimonio íntimo": [["💐 Ceremonia en patio o terraza", "incluida en montaje"], ["🎻 Música en vivo para ceremonia", "desde $400.000"], ["🍾 Barra de espumantes", "desde $9.000/persona"]],
+    "Concierto privado": [["🎸 Artista local de apertura", "desde $400.000"], ["🍺 Barra completa", "desde $8.000/persona"], ["🎚️ Refuerzo técnico de sonido", "desde $500.000"]],
+    "Otro": [["🎭 Actividad cultural a medida (obra corta, recorrido, música)", "cotizamos según tu idea"]],
+  };
+  function wzActs() { // el tipo se guarda con emoji ("🎉 Fiesta corporativa") — matchear por inclusión
+    const t = wz.data.tipo || "";
+    const k = Object.keys(WZ_ACTIVIDADES).find((key) => t.includes(key));
+    return WZ_ACTIVIDADES[k] || WZ_ACTIVIDADES["Otro"];
+  }
+  function wzEstimacion(s) {
+    const extras = (s.costos || []).reduce((a, c) => a + c.monto, 0);
+    const prod = WZ_PROD_EST[wz.data.pax] || WZ_PROD_EST["30–80"];
+    return [s.precio_dia + extras + prod[0], s.precio_dia + extras + prod[1]];
+  }
+  function wzProsContras(s) {
+    const d = wz.data, paxMin = WZ_PAX_MIN[d.pax] || 0, budMax = WZ_BUDGET_MAX[d.presupuesto];
+    const nec = d.necesidades || [], eq = (s.equipamiento || []).join(" ") + " " + s.tipo;
+    const pros = [], contras = [];
+    if (avgRating(s) >= 4.5) pros.push("Excelente evaluación (" + avgRating(s).toFixed(1) + "★, " + reviewsCount(s) + " reseñas)");
+    if (paxMin && s.capacidad >= paxMin * 1.5) pros.push("Capacidad holgada para tu aforo (" + s.capacidad + " personas)");
+    const tiene = nec.filter((n) => WZ_KEYWORDS[n] && WZ_KEYWORDS[n].test(eq));
+    if (tiene.length) pros.push("Incluye lo que pediste: " + tiene.join(", ").toLowerCase());
+    if (budMax && isFinite(budMax) && s.precio_dia <= budMax * 0.4) pros.push("El arriendo deja margen amplio para producción y catering");
+    if (DB.meta.favoritos.includes(s.id)) pros.push("Lo guardaste en tus favoritos");
+    const falta = nec.filter((n) => WZ_KEYWORDS[n] && !WZ_KEYWORDS[n].test(eq));
+    if (falta.length) contras.push("No incluye " + falta.join(", ").toLowerCase() + " — se cotiza externo");
+    if (paxMin && s.capacidad < paxMin * 1.2) contras.push("Capacidad justa: conviene confirmar el formato (de pie vs sentado)");
+    if ((s.costos || []).length >= 2) contras.push("Costos adicionales obligatorios: " + s.costos.map((c) => c.concepto.toLowerCase()).join(", "));
+    return { pros: pros.slice(0, 3), contras: contras.slice(0, 2) };
+  }
   function wzShowResultado() {
-    const sel = wzMatch();
+    const sel = wzMatch().slice(0, 3), d = wz.data;
     $("#wz-bar").style.width = "100%";
+    $("#wz-panel").classList.add("wide");
+    const bloque = (s) => {
+      const pc = wzProsContras(s), est = wzEstimacion(s);
+      return '<article class="prop-esp">' +
+        '<div class="pe-head"><div class="pe-swatch" style="background:linear-gradient(135deg,' + s.colores[0] + "," + s.colores[1] + ')">' + s.emoji + "</div>" +
+        "<div><h4>" + esc(s.nombre) + "</h4><p class='pe-meta'>" + esc(s.comuna) + " · " + esc(s.tipo) + " · hasta " + s.capacidad + " personas · " + s.m2 + " m²</p></div></div>" +
+        '<p class="pe-est">Costo estimado del evento: <b>' + clp(est[0]) + " – " + clp(est[1]) + "</b> <span>(arriendo " + clp(s.precio_dia) + "/día + costos del espacio + producción estimada)</span></p>" +
+        '<div class="pe-pc"><div><span class="pe-tag ok">A favor</span><ul>' + pc.pros.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul></div>" +
+        (pc.contras.length ? '<div><span class="pe-tag warn">A considerar</span><ul>' + pc.contras.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul></div>" : "") + "</div></article>";
+    };
+    const acts = wzActs();
     $("#wz-body").innerHTML = '<div class="wz-step">' +
-      '<h3>Tu pre-propuesta está lista 🎉</h3>' +
-      '<p class="wz-sub">' + sel.length + " espacios que calzan con tu evento. Tarifas referenciales — confirmamos disponibilidad y condiciones en 24–48 h.</p>" +
-      '<div class="wz-favs">' + sel.map((s) => "<span>" + esc(s.nombre) + " · " + esc(s.comuna) + " · " + s.capacidad + " pers · " + clp(s.precio_dia) + "/día</span>").join("") + "</div>" +
-      '<button class="btn primary lg block" id="wz-pdf" style="margin-top:16px">Descargar propuesta (PDF) ↓</button>' +
-      '<button class="btn lg block" id="wz-wa" style="margin-top:10px">Enviar por WhatsApp para confirmar disponibilidad →</button>' +
-      '<div class="wz-trust">La pre-propuesta es automática y referencial. Un humano la revisa, confirma disponibilidad con cada espacio y te contacta en 24–48 h.</div></div>';
+      "<h3>Tu propuesta, " + esc((d.nombre || "").split(" ")[0]) + " 🎉</h3>" +
+      '<p class="wz-sub">' + esc(d.tipo || "Evento") + " · " + esc(d.pax || "—") + " personas · " + (d.fecha ? esc(d.fecha) + (d.flex ? " (flexible)" : "") : "fecha por definir") + " · presupuesto " + esc(d.presupuesto || "abierto") + "</p>" +
+      "<h4 class='prop-h'>Te proponemos estos " + sel.length + " lugares</h4>" + sel.map(bloque).join("") +
+      "<h4 class='prop-h'>Actividades para hacerlo memorable</h4>" +
+      '<ul class="prop-acts">' + acts.map((a) => "<li><span>" + a[0] + "</span><em>" + a[1] + "</em></li>").join("") + "</ul>" +
+      '<div class="prop-next"><b>✅ Tu solicitud ya fue enviada a nuestro equipo.</b> Te contactaremos en 24–48 h para confirmar disponibilidad y afinar el detalle. ¿Cómo quieres seguir?</div>' +
+      '<button class="btn primary lg block" id="wz-ahora" style="margin-top:12px">Quiero partir ahora — hablemos →</button>' +
+      '<button class="btn lg block" id="wz-pdf" style="margin-top:10px">Descargar propuesta (PDF) ↓</button>' +
+      '<button class="wz-skip block" id="wz-espera" style="margin-top:10px;width:100%">Prefiero esperar el contacto del equipo</button>' +
+      '<div class="wz-trust">Propuesta automática y referencial sobre nuestra base de espacios. Un humano la revisa antes de contactarte.</div></div>';
     track("wz_resultado");
   }
   function wzAbrirPropuesta() {
-    const d = wz.data, sel = wzMatch();
+    const d = wz.data, sel = wzMatch().slice(0, 3);
     const hoy = new Date().toLocaleDateString("es-CL", { day: "numeric", month: "long", year: "numeric" });
-    const fila = (s) => '<section class="esp">' +
+    const acts = wzActs();
+    const fila = (s) => {
+      const pc = wzProsContras(s), est = wzEstimacion(s);
+      return '<section class="esp">' +
       '<div class="swatch" style="background:linear-gradient(135deg,' + s.colores[0] + "," + s.colores[1] + ')">' + s.emoji + "</div>" +
       "<div><h2>" + esc(s.nombre) + "</h2>" +
       "<p class='meta'>" + esc(s.comuna) + (s.barrio ? " · " + esc(s.barrio) : "") + " · " + esc(s.tipo) + " · hasta " + s.capacidad + " personas · " + s.m2 + " m²</p>" +
-      "<p class='precio'>" + clp(s.precio_dia) + " / día · " + clp(s.precio_hora) + " / hora</p>" +
-      ((s.equipamiento || []).length ? "<p class='eq'>Incluye: " + s.equipamiento.map(esc).join(" · ") + "</p>" : "") +
-      ((s.costos || []).length ? "<p class='eq'>Costos adicionales: " + s.costos.map((c) => esc(c.concepto) + " " + clp(c.monto)).join(" · ") + "</p>" : "") +
-      (s.ejemplo ? "<p class='eq'>Ideal para: " + esc(s.ejemplo) + "</p>" : "") +
-      "</div></section>";
+      "<p class='precio'>Costo estimado del evento: " + clp(est[0]) + " – " + clp(est[1]) + "</p>" +
+      "<p class='eq'>Arriendo: " + clp(s.precio_dia) + " / día · " + clp(s.precio_hora) + " / hora" +
+      ((s.costos || []).length ? " · Adicionales: " + s.costos.map((c) => esc(c.concepto) + " " + clp(c.monto)).join(", ") : "") + "</p>" +
+      (pc.pros.length ? "<p class='eq'><b>A favor:</b> " + pc.pros.map(esc).join(" · ") + "</p>" : "") +
+      (pc.contras.length ? "<p class='eq'><b>A considerar:</b> " + pc.contras.map(esc).join(" · ") + "</p>" : "") +
+      "</div></section>"; };
     const w = window.open("", "_blank");
     w.document.write("<!doctype html><html lang='es'><head><meta charset='utf-8'><title>Pre-propuesta de espacios — " + esc(d.nombre || "") + "</title><style>" +
       "*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font:15px/1.55 Georgia,serif;color:#14181d;max-width:760px;margin:40px auto;padding:0 24px}" +
@@ -11444,8 +11522,10 @@
       (d.fecha ? "fecha " + esc(d.fecha) + (d.flex ? " (flexible)" : "") : "fecha por definir") +
       " · presupuesto " + esc(d.presupuesto || "abierto") + "</p></header>" +
       sel.map(fila).join("") +
-      "<footer>Pre-propuesta automática y referencial, sujeta a confirmación de disponibilidad y condiciones con cada espacio (24–48 h). " +
-      "Tarifas no incluyen producción ni catering salvo que se indique. Contacto: " + esc(d.fono || "") + (d.email ? " · " + esc(d.email) : "") + "</footer>" +
+      "<h2 style='font-size:15px;margin:20px 0 6px'>Actividades sugeridas para tu evento</h2>" +
+      acts.map((a) => "<p class='eq'>" + a[0] + " — " + a[1] + "</p>").join("") +
+      "<footer><b>Tu solicitud ya fue enviada a nuestro equipo</b> — te contactaremos en 24–48 h para confirmar disponibilidad y afinar el detalle. " +
+      "Estimaciones automáticas y referenciales (arriendo + costos del espacio + producción estimada); no incluyen catering salvo indicación. Contacto: " + esc(d.fono || "") + (d.email ? " · " + esc(d.email) : "") + "</footer>" +
       "</body></html>");
     w.document.close();
   }
@@ -11454,10 +11534,6 @@
     bar.hidden = n === 0;
     $("#prop-bar-txt").textContent = "Mi propuesta (" + n + ")";
   }
-  $("#ev-chips").addEventListener("click", (e) => {
-    const c = e.target.closest("[data-ev]"); if (!c) return;
-    wz.data.tipo = c.dataset.ev; wzSave(); openWizard("hero");
-  });
   $("#ev-lost").addEventListener("click", () => {
     track("puerta_perdido");
     window.open("https://wa.me/" + WZ_DESTINO + "?text=" + encodeURIComponent("Hola! Quiero hacer un evento pero no sé por dónde partir. ¿Me ayudan?"), "_blank");
@@ -11469,6 +11545,7 @@
   renderAll();
   goTab(defaultTab());
   updatePropBar();
+  wzRender(); // la herramienta parte abierta en el paso 1 — cero clicks para empezar
 })();
 </script>
 </body>

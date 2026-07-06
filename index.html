@@ -1248,6 +1248,16 @@
       <p class="eyebrow accent">ESPACIOS CULTURALES · CHILE</p>
       <h1>El espacio cultural para tu <em>próximo evento</em></h1>
       <p>Cuéntanos qué necesitas y te proponemos 3–5 espacios con tarifas y condiciones en 48 horas.</p>
+      <!-- MVP wizard: puerta 1 — tipo de evento (un tap = paso 1 del brief) -->
+      <div class="ev-chips" id="ev-chips" role="group" aria-label="¿Qué evento quieres hacer?">
+        <button type="button" data-ev="Fiesta corporativa">🎉 Fiesta corporativa</button>
+        <button type="button" data-ev="Lanzamiento">🚀 Lanzamiento</button>
+        <button type="button" data-ev="Cena privada">🍽️ Cena privada</button>
+        <button type="button" data-ev="Matrimonio íntimo">💍 Matrimonio íntimo</button>
+        <button type="button" data-ev="Concierto privado">🎤 Concierto</button>
+        <button type="button" data-ev="Otro">✨ Otro</button>
+      </div>
+      <button type="button" class="ev-lost" id="ev-lost">¿No sabes por dónde partir? Cuéntanos por WhatsApp →</button>
       <!-- trigger compacto (sólo mobile): abre el buscador como bottom-sheet -->
       <button type="button" class="search-trigger" id="search-trigger" aria-expanded="false" aria-controls="searchbar">
         <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
@@ -1463,6 +1473,54 @@
       <button class="btn" data-close>Cancelar</button>
       <button class="btn primary" id="btn-save-space">Guardar espacio</button>
     </div>
+  </div>
+</div>
+
+<!-- ============ MVP WIZARD: crear tu propuesta (test JTBD, fase 0) ============ -->
+<style>
+  .ev-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .ev-chips button {
+    appearance: none; cursor: pointer; font: inherit; font-size: 14.5px; font-weight: 600;
+    color: #fff; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px; padding: 9px 15px; backdrop-filter: blur(6px);
+  }
+  .ev-chips button:hover, .ev-chips button:focus-visible { background: rgba(255,255,255,.28); }
+  .ev-lost { appearance: none; background: none; border: none; cursor: pointer; font: inherit;
+    color: rgba(255,255,255,.85); font-size: 13px; margin-top: 12px; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
+  .prop-bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; z-index: 60;
+    display: flex; align-items: center; gap: 12px; background: var(--ink, #14181d); color: #fff;
+    border-radius: 999px; padding: 10px 12px 10px 20px; box-shadow: 0 8px 30px rgba(0,0,0,.35); }
+  .prop-bar[hidden] { display: none; }
+  .prop-bar .pb-txt { font-size: 14px; font-weight: 600; white-space: nowrap; }
+  @media (max-width: 760px) { .prop-bar { bottom: 74px; width: calc(100% - 28px); justify-content: space-between; } }
+  .wz .modal-body { min-height: 300px; }
+  .wz-progress { height: 4px; background: var(--line, #e6e6e6); }
+  .wz-progress .wz-bar { height: 100%; background: var(--accent, #2456e6); transition: width .25s; }
+  .wz-step h3 { font-size: 20px; margin: 0 0 4px; }
+  .wz-step .wz-sub { color: var(--muted, #667); font-size: 13.5px; margin: 0 0 18px; }
+  .wz-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .wz-chips button { appearance: none; cursor: pointer; font: inherit; font-size: 15px;
+    border: 1.5px solid var(--line, #ddd); background: var(--bg, #fff); border-radius: 12px; padding: 12px 16px; }
+  .wz-chips button.on, .wz-chips button:hover { border-color: var(--accent, #2456e6); }
+  .wz-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; gap: 10px; }
+  .wz-skip { appearance: none; background: none; border: none; cursor: pointer; font: inherit;
+    color: var(--muted, #667); font-size: 13.5px; text-decoration: underline; text-underline-offset: 3px; padding: 6px 0; }
+  .wz-trust { margin-top: 20px; padding: 10px 14px; background: var(--surface, #f5f6f8); border-radius: 10px;
+    font-size: 12.5px; color: var(--muted, #667); }
+  .wz-favs { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
+  .wz-favs span { font-size: 12px; background: var(--surface, #f2f3f5); border-radius: 999px; padding: 4px 10px; }
+  .fav-lbl { font-size: 11.5px; font-weight: 700; margin-left: 5px; }
+</style>
+<div class="prop-bar" id="prop-bar" hidden>
+  <span class="pb-txt" id="prop-bar-txt">Mi propuesta (0)</span>
+  <button class="btn primary" id="prop-bar-cta">Pedir propuesta →</button>
+</div>
+<div class="modal-bg" id="modal-wizard">
+  <div class="modal wz" role="dialog" aria-modal="true" aria-labelledby="wz-title">
+    <div class="modal-head"><h2 id="wz-title">Arma tu propuesta</h2>
+      <button class="x-close" data-close aria-label="Cerrar"><svg class="ic sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="wz-progress"><div class="wz-bar" id="wz-bar" style="width:25%"></div></div>
+    <div class="modal-body" id="wz-body"></div>
   </div>
 </div>
 
@@ -9833,7 +9891,7 @@
     const espacios = raw.espacios.map(function (e) {
       return Object.assign({}, e, { reviews_n: (e.reviews_count != null ? e.reviews_count : (e.reviews ? e.reviews.length : 0)) });
     });
-    const favs = ["esp-05", "esp-12", "esp-23", "esp-38"].filter(function (id) { return espacios.some(function (e) { return e.id === id; }); });
+    const favs = []; // MVP: usuario real parte sin favoritos — la colección es suya
     return {
       espacios: espacios,
       clientes: raw.clientes,
@@ -10227,8 +10285,10 @@
 
   function favBtn(s) {
     const on = DB.meta.favoritos.includes(s.id);
+    // ponytail: corazón + etiqueta (heat maps: corazón solo = taps a ciegas)
     return '<button class="fav' + (on ? " on" : "") + '" data-fav="' + s.id + '" aria-pressed="' + on +
-      '" aria-label="' + (on ? "Quitar de favoritos" : "Agregar a favoritos") + '">' + ICON.heart("ic") + '</button>';
+      '" aria-label="' + (on ? "Quitar de mi propuesta" : "Guardar en mi propuesta") + '">' + ICON.heart("ic") +
+      '<span class="fav-lbl">' + (on ? "Guardado" : "Guardar") + '</span></button>';
   }
   function photo(s, variant, cls, withIndex) {
     return '<div class="' + (cls || "ph-fill") + '" style="' + gradStyle(s.colores[0], s.colores[1], variant) + '">' +
@@ -10284,8 +10344,11 @@
     $$('[data-fav="' + id + '"]').forEach((b) => {
       const on = DB.meta.favoritos.includes(id);
       b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on));
-      b.setAttribute("aria-label", on ? "Quitar de favoritos" : "Agregar a favoritos");
+      b.setAttribute("aria-label", on ? "Quitar de mi propuesta" : "Guardar en mi propuesta");
+      const lbl = b.querySelector(".fav-lbl"); if (lbl) lbl.textContent = on ? "Guardado" : "Guardar";
     });
+    if (DB.meta.favoritos.includes(id)) track("fav_add");
+    updatePropBar();
   }
 
   /* ====================================================================
@@ -11192,10 +11255,142 @@
     renderAnfitrion();
   }
 
+  /* ====================================================================
+     MVP WIZARD «Crear tu propuesta» — test de flujo/JTBD, fase 0.
+     ponytail: sin backend — brief sale por WhatsApp; métricas en localStorage.
+     Ver métricas en consola: JSON.parse(localStorage.mvp_metrics)
+     ==================================================================== */
+  const WZ_DESTINO = ""; // pendiente: número WhatsApp destino, formato 569XXXXXXXX
+  function track(ev) {
+    try {
+      const m = JSON.parse(localStorage.getItem("mvp_metrics") || "{}");
+      m[ev] = (m[ev] || 0) + 1; m._ultimo = ev + " @ " + new Date().toISOString();
+      localStorage.setItem("mvp_metrics", JSON.stringify(m));
+    } catch (e) { /* métricas nunca rompen el flujo */ }
+  }
+  const wz = { paso: 0, data: {} };
+  try { wz.data = JSON.parse(localStorage.getItem("wz_data") || "{}"); } catch (e) { wz.data = {}; }
+  function wzSave() { localStorage.setItem("wz_data", JSON.stringify(wz.data)); }
+  function chips(opciones, campo, avanzar) {
+    return '<div class="wz-chips">' + opciones.map((o) =>
+      '<button type="button" data-wz-set="' + campo + '" data-wz-val="' + esc(o) + '"' +
+      (wz.data[campo] === o ? ' class="on"' : '') + (avanzar ? ' data-wz-next="1"' : '') + '>' + esc(o) + '</button>').join("") + '</div>';
+  }
+  const WZ_PASOS = [
+    { id: "tipo", render: () => '<h3>¿Qué evento quieres hacer?</h3><p class="wz-sub">Un tap y seguimos.</p>' +
+        chips(["🎉 Fiesta corporativa", "🚀 Lanzamiento", "🍽️ Cena privada", "💍 Matrimonio íntimo", "🎤 Concierto privado", "✨ Otro"], "tipo", true) },
+    { id: "pax", render: () => '<h3>¿Cuántas personas?</h3><p class="wz-sub">Aproximado — después se afina.</p>' +
+        chips(["Menos de 30", "30–80", "80–150", "150+"], "pax", true) },
+    { id: "fecha", skip: "Aún no tengo fecha", render: () =>
+        '<h3>¿Cuándo sería?</h3><p class="wz-sub">Si eres flexible, mejor: calzan más espacios.</p>' +
+        '<input type="date" id="wz-fecha" value="' + (wz.data.fecha || "") + '" style="font:inherit;padding:10px;border:1.5px solid var(--line,#ddd);border-radius:10px" /> ' +
+        chips(["Soy flexible con la fecha 🗓"], "flex", false) },
+    { id: "presupuesto", skip: "Prefiero que me propongan", render: () =>
+        '<h3>¿Presupuesto para el espacio?</h3>' +
+        '<p class="wz-sub">Referencia en espacios culturales: básico ~$300 mil · promedio ~$800 mil · premium $2M+ por jornada.</p>' +
+        chips(["Menos de $500 mil", "$500 mil – $1M", "$1M – $3M", "Más de $3M"], "presupuesto", true) },
+    { id: "necesidades", skip: "Nada especial, continuar", render: () =>
+        '<h3>¿Qué necesita tu evento? <span style="font-weight:400;font-size:13px;color:var(--muted,#667)">(opcional)</span></h3><p class="wz-sub">Marca todo lo que aplique.</p>' +
+        '<div class="wz-chips">' + ["Sonido", "Proyector", "Catering / cocina", "Terraza o exterior", "Accesibilidad", "Estacionamiento"].map((o) =>
+          '<button type="button" data-wz-multi="' + o + '"' + ((wz.data.necesidades || []).includes(o) ? ' class="on"' : '') + '>' + o + '</button>').join("") + '</div>' },
+    { id: "urgencia", render: () => '<h3>¿Qué tan pronto lo necesitas?</h3><p class="wz-sub">Para priorizar tu propuesta.</p>' +
+        chips(["Es urgente 🔥", "Próximas semanas", "Solo estoy mirando"], "urgencia", true) },
+    { id: "contacto", render: () => '<h3>Ya casi — ¿a dónde te enviamos la propuesta?</h3>' +
+        '<p class="wz-sub">Gratis. Solo le pagas al espacio si cierras.</p>' +
+        '<div class="field"><label for="wz-nombre">Nombre</label><input type="text" id="wz-nombre" value="' + esc(wz.data.nombre || "") + '" placeholder="Camila Rojas" /></div>' +
+        '<div class="field"><label for="wz-fono">WhatsApp</label><input type="tel" id="wz-fono" value="' + esc(wz.data.fono || "") + '" placeholder="+569 1234 5678" /></div>' +
+        '<button class="btn primary lg block" id="wz-enviar">Recibe tus 3–5 espacios →</button>' },
+  ];
+  function wzFavsHtml() {
+    const favs = DB.meta.favoritos.map((id) => espacio(id)).filter(Boolean);
+    if (!favs.length) return "";
+    return '<div class="wz-favs"><span style="background:none;padding-left:0">Tu propuesta partirá de:</span>' +
+      favs.map((s) => "<span>" + esc(s.nombre) + "</span>").join("") + "</div>";
+  }
+  function wzRender() {
+    const p = WZ_PASOS[wz.paso];
+    // la barra nunca parte en 0: efecto endowed progress (HeadBox parte en 27%)
+    $("#wz-bar").style.width = (25 + (wz.paso / WZ_PASOS.length) * 75) + "%";
+    $("#wz-body").innerHTML = '<div class="wz-step">' + (wz.paso === 0 ? wzFavsHtml() : "") + p.render() +
+      '<div class="wz-foot">' +
+        (wz.paso > 0 ? '<button type="button" class="wz-skip" id="wz-back">← Volver</button>' : "<span></span>") +
+        '<span style="display:flex;gap:14px;align-items:center">' +
+          (p.skip ? '<button type="button" class="wz-skip" id="wz-skip">' + p.skip + " →</button>" : "") +
+          (p.id === "fecha" || p.id === "necesidades" ? '<button type="button" class="btn primary" id="wz-next">Continuar →</button>' : "") +
+        "</span>" +
+      "</div>" +
+      '<div class="wz-trust">Así funciona: nos cuentas tu evento → te proponemos 3–5 espacios con tarifas y condiciones reales → tú eliges y nosotros coordinamos. Respuesta en 48 h.</div></div>';
+    track("wz_paso_" + p.id);
+  }
+  function wzNext() { if (wz.paso < WZ_PASOS.length - 1) { wz.paso++; wzGuardaCampos(); wzRender(); } }
+  function wzGuardaCampos() {
+    const f = $("#wz-fecha"); if (f && f.value) wz.data.fecha = f.value;
+    const n = $("#wz-nombre"); if (n) wz.data.nombre = n.value.trim();
+    const t = $("#wz-fono"); if (t) wz.data.fono = t.value.trim();
+    wzSave();
+  }
+  function openWizard(puerta) {
+    track("puerta_" + puerta);
+    wz.paso = (puerta === "hero" && wz.data.tipo) ? 1 : 0;
+    openModal("#modal-wizard"); wzRender();
+  }
+  $("#wz-body").addEventListener("click", (e) => {
+    const set = e.target.closest("[data-wz-set]");
+    if (set) {
+      wz.data[set.dataset.wzSet] = set.dataset.wzVal; wzSave();
+      $$('[data-wz-set="' + set.dataset.wzSet + '"]', $("#wz-body")).forEach((b) => b.classList.toggle("on", b === set));
+      if (set.dataset.wzNext) setTimeout(wzNext, 180);
+      return;
+    }
+    const multi = e.target.closest("[data-wz-multi]");
+    if (multi) {
+      const v = multi.dataset.wzMulti, arr = wz.data.necesidades || [];
+      wz.data.necesidades = arr.includes(v) ? arr.filter((x) => x !== v) : arr.concat(v);
+      multi.classList.toggle("on"); wzSave(); return;
+    }
+    if (e.target.closest("#wz-back")) { wzGuardaCampos(); wz.paso--; wzRender(); return; }
+    if (e.target.closest("#wz-skip") || e.target.closest("#wz-next")) { wzGuardaCampos(); wzNext(); return; }
+    if (e.target.closest("#wz-enviar")) {
+      wzGuardaCampos();
+      if (!wz.data.nombre) { toast("Cuéntanos tu nombre"); $("#wz-nombre").focus(); return; }
+      if (!wz.data.fono) { toast("Necesitamos tu WhatsApp para enviarte la propuesta"); $("#wz-fono").focus(); return; }
+      const favs = DB.meta.favoritos.map((id) => (espacio(id) || {}).nombre).filter(Boolean);
+      const d = wz.data;
+      const msg = "Hola! Quiero armar un evento:\n" +
+        "• Tipo: " + (d.tipo || "—") + "\n• Personas: " + (d.pax || "—") + "\n" +
+        "• Fecha: " + (d.fecha || "sin definir") + (d.flex ? " (flexible)" : "") + "\n" +
+        "• Presupuesto: " + (d.presupuesto || "abierto — que me propongan") + "\n" +
+        ((d.necesidades || []).length ? "• Necesita: " + d.necesidades.join(", ") + "\n" : "") +
+        "• Urgencia: " + (d.urgencia || "—") + "\n" +
+        (favs.length ? "• Espacios que me gustaron: " + favs.join(", ") + "\n" : "") +
+        "• Nombre: " + d.nombre + "\n• WhatsApp: " + d.fono;
+      window.open("https://wa.me/" + WZ_DESTINO + "?text=" + encodeURIComponent(msg), "_blank");
+      track("wz_enviado");
+      closeModal("#modal-wizard");
+      toast("¡Listo! Te enviamos tu propuesta en 48 horas", "check");
+      localStorage.removeItem("wz_data"); wz.data = {}; wz.paso = 0;
+    }
+  });
+  function updatePropBar() {
+    const n = DB.meta.favoritos.length, bar = $("#prop-bar");
+    bar.hidden = n === 0;
+    $("#prop-bar-txt").textContent = "Mi propuesta (" + n + ")";
+  }
+  $("#ev-chips").addEventListener("click", (e) => {
+    const c = e.target.closest("[data-ev]"); if (!c) return;
+    wz.data.tipo = c.dataset.ev; wzSave(); openWizard("hero");
+  });
+  $("#ev-lost").addEventListener("click", () => {
+    track("puerta_perdido");
+    window.open("https://wa.me/" + WZ_DESTINO + "?text=" + encodeURIComponent("Hola! Quiero hacer un evento pero no sé por dónde partir. ¿Me ayudan?"), "_blank");
+  });
+  $("#prop-bar-cta").addEventListener("click", () => openWizard("coleccion"));
+
   load();
   applyMode();
   renderAll();
   goTab(defaultTab());
+  updatePropBar();
 })();
 </script>
 </body>

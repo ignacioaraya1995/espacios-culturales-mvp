@@ -1246,8 +1246,8 @@
       <video class="hero-vid" src="hero.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
       <div class="hero-scrim"></div>
       <p class="eyebrow accent">ESPACIOS CULTURALES · CHILE</p>
-      <h1>Arrienda <em>espacios culturales</em></h1>
-      <p>Galerías, salas de ensayo, patios patrimoniales y talleres en Santiago y regiones.</p>
+      <h1>El espacio cultural para tu <em>próximo evento</em></h1>
+      <p>Cuéntanos qué necesitas y te proponemos 3–5 espacios con tarifas y condiciones en 48 horas.</p>
       <!-- trigger compacto (sólo mobile): abre el buscador como bottom-sheet -->
       <button type="button" class="search-trigger" id="search-trigger" aria-expanded="false" aria-controls="searchbar">
         <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
@@ -1482,7 +1482,7 @@
     </div>
     <div class="modal-foot">
       <button class="btn" data-close>Volver</button>
-      <button class="btn primary" id="btn-confirm-reserva">Confirmar reserva</button>
+      <button class="btn primary" id="btn-confirm-reserva">Enviar solicitud de cotización</button>
     </div>
   </div>
 </div>
@@ -9906,8 +9906,7 @@
   const TABS = {
     publico: [
       { id: "explorar",  label: "Explorar",     icon: "search" },
-      { id: "mapa",      label: "Mapa",         icon: "map" },
-      { id: "reservas",  label: "Mis reservas", icon: "calendar" }
+      { id: "mapa",      label: "Mapa",         icon: "map" }
     ],
     admin: [
       { id: "anfitrion",   label: "Anfitrión",    icon: "chart" },
@@ -10398,7 +10397,7 @@
       '<div class="pdp-bottombar" id="pdp-bottombar">' +
         '<div class="bb-price"><b>' + clp(s.precio_dia) + '</b> <span class="per">/ día</span>' +
           '<span class="bb-sub">desde ' + clp(s.precio_hora) + ' / hora</span></div>' +
-        '<button class="btn primary" id="bb-reservar">Reservar</button>' +
+        '<button class="btn primary" id="bb-reservar">Cotizar</button>' +
       '</div>' +
       '<div class="pdp-sheet-backdrop" id="pdp-sheet-backdrop" hidden></div>';
 
@@ -10448,7 +10447,7 @@
     const fechaLabel = state.bkFecha ? fechaCorta(state.bkFecha) : "Elige una fecha";
 
     wrap.innerHTML =
-      '<div class="bk-sheet-head"><span class="bk-sheet-title">Reservar</span>' +
+      '<div class="bk-sheet-head"><span class="bk-sheet-title">Cotizar</span>' +
         '<button class="x-close" id="bk-sheet-close" aria-label="Cerrar"><svg class="ic sm" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>' +
       '<div class="bk-price"><b>' + clp(state.bkTipo === "hora" ? s.precio_hora : s.precio_dia) + '</b> ' +
         '<span class="per">/ ' + (state.bkTipo === "hora" ? "hora" : "día") + '</span></div>' +
@@ -10475,8 +10474,8 @@
         '<div class="ln"><span class="lbl muted">Depósito (30%)</span><span>' + clp(deposito) + '</span></div>' +
         '<div class="total"><span>Total</span><span class="amt">' + clp(total) + '</span></div>' +
       '</div>' +
-      '<button class="btn primary lg block" id="bk-reserve">Reservar</button>' +
-      '<p class="bk-note">No se cobra aún. Confirmas y coordinas el pago.</p>';
+      '<button class="btn primary lg block" id="bk-reserve">Cotizar este espacio</button>' +
+      '<p class="bk-note">No es una reserva ni un cobro: es una solicitud de cotización. El espacio confirma disponibilidad y condiciones en 24–48 h.</p>';
 
     // listeners
     $$('[data-bk]', wrap).forEach((b) => b.addEventListener("click", () => {
@@ -10584,7 +10583,7 @@
     const s = espacio(state.detalleId);
     const warn = $("#bk-warn");
     warn.classList.remove("show");
-    if (!state.bkFecha) { warn.textContent = "Elige una fecha para reservar."; warn.classList.add("show"); return; }
+    if (!state.bkFecha) { warn.textContent = "Elige una fecha para cotizar."; warn.classList.add("show"); return; }
     if (state.bkTipo === "hora") {
       if (durHoras(state.bkIni, state.bkFin) <= 0) { warn.textContent = "La hora de término debe ser posterior a la de inicio."; warn.classList.add("show"); return; }
     }
@@ -10632,9 +10631,18 @@
     });
     save(); state.pendingReserva = null;
     closeModal("#modal-cliente");
-    toast("Reserva creada", "check");
+    // ponytail: sin backend — la solicitud viaja por WhatsApp prefilleado; el registro local es respaldo
+    const esp = espacio(p.espacio_id);
+    const horaTxt = p.tipo === "hora" ? (p.hora_inicio + "–" + p.hora_fin) : "día completo";
+    const msg = "Hola! Quiero cotizar un espacio cultural:\n" +
+      "• Espacio: " + esp.nombre + " (" + esp.comuna + ")\n" +
+      "• Fecha: " + p.fecha + " · " + horaTxt + "\n" +
+      "• Referencia: " + clp(p.monto) + "\n" +
+      "• Nombre: " + nombre + (email ? "\n• Email: " + email : "") +
+      ($("#cl-notas").value.trim() ? "\n• Notas: " + $("#cl-notas").value.trim() : "");
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+    toast("Solicitud enviada — te confirmamos disponibilidad en 24–48 h", "check");
     populateTipoSelects();
-    goTab("reservas");
   });
 
   /* ====================================================================

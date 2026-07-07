@@ -1499,7 +1499,19 @@
     gap: 48px; align-items: center; padding: 56px 48px;
     background: linear-gradient(180deg, #1b222b, var(--charcoal, #14181d)); }
   @media (max-width: 920px) {
-    .explore-hero.hero-tool { grid-template-columns: 1fr; gap: 22px; padding: 30px 18px 26px; }
+    .explore-hero.hero-tool { grid-template-columns: 1fr; gap: 18px; padding: 24px 18px 24px; }
+    /* mobile: la herramienta primero — el pitch scrollea después, no antes */
+    .ht-right { order: -1; }
+    .ht-left h1 { font-size: 28px; }
+    .ht-left > p { display: none; }
+  }
+  /* la propuesta larga scrollea dentro del panel: la banda oscura no se estira infinito */
+  .wz-panel.wide .wz-inline-body { max-height: 74vh; overflow-y: auto; overscroll-behavior: contain; }
+  /* mobile: el disclaimer no puede comerse el primer scroll — una línea y listo */
+  @media (max-width: 920px) {
+    main > .callout { padding: 8px 14px; }
+    main > .callout .eyebrow { margin: 0; }
+    main > .callout p:not(.eyebrow) { display: none; }
   }
   .ht-trust { list-style: none; margin: 16px 0 4px; padding: 0;
     display: flex; flex-direction: column; gap: 7px;
@@ -11341,23 +11353,26 @@
     } catch (e) { /* métricas nunca rompen el flujo */ }
   }
   const wz = { paso: 0, data: {} };
-  try { wz.data = JSON.parse(localStorage.getItem("wz_data") || "{}"); } catch (e) { wz.data = {}; }
-  function wzSave() { localStorage.setItem("wz_data", JSON.stringify(wz.data)); }
+  // sessionStorage: sobrevive al back/reload DENTRO de la visita, pero cada visita nueva parte limpia
+  // (respuestas viejas pre-seleccionadas confunden: el paso parece respondido y no avanza)
+  try { wz.data = JSON.parse(sessionStorage.getItem("wz_data") || "{}"); } catch (e) { wz.data = {}; }
+  try { localStorage.removeItem("wz_data"); } catch (e) {}
+  function wzSave() { sessionStorage.setItem("wz_data", JSON.stringify(wz.data)); }
   function chips(opciones, campo, avanzar) {
     return '<div class="wz-chips">' + opciones.map((o) =>
       '<button type="button" data-wz-set="' + campo + '" data-wz-val="' + esc(o) + '"' +
       (wz.data[campo] === o ? ' class="on"' : '') + (avanzar ? ' data-wz-next="1"' : '') + '>' + esc(o) + '</button>').join("") + '</div>';
   }
   const WZ_PASOS = [
-    { id: "tipo", render: () => '<h3>¿Qué evento quieres hacer?</h3><p class="wz-sub">Un tap y seguimos.</p>' +
+    { id: "tipo", campo: "tipo", render: () => '<h3>¿Qué evento quieres hacer?</h3><p class="wz-sub">Un tap y seguimos.</p>' +
         chips(["🎉 Fiesta corporativa", "🚀 Lanzamiento", "🍽️ Cena privada", "💍 Matrimonio íntimo", "🎤 Concierto privado", "✨ Otro"], "tipo", true) },
-    { id: "pax", render: () => '<h3>¿Cuántas personas?</h3><p class="wz-sub">Aproximado — después se afina.</p>' +
+    { id: "pax", campo: "pax", render: () => '<h3>¿Cuántas personas?</h3><p class="wz-sub">Aproximado — después se afina.</p>' +
         chips(["Menos de 30", "30–80", "80–150", "150+"], "pax", true) },
     { id: "fecha", skip: "Aún no tengo fecha", render: () =>
         '<h3>¿Cuándo sería?</h3><p class="wz-sub">Si eres flexible, mejor: calzan más espacios.</p>' +
         '<input type="date" id="wz-fecha" value="' + (wz.data.fecha || "") + '" style="font:inherit;padding:10px;border:1.5px solid var(--line,#ddd);border-radius:10px" /> ' +
         chips(["Soy flexible con la fecha 🗓"], "flex", false) },
-    { id: "presupuesto", skip: "Prefiero que me propongan", render: () =>
+    { id: "presupuesto", campo: "presupuesto", skip: "Prefiero que me propongan", render: () =>
         '<h3>¿Presupuesto del evento?</h3>' +
         '<p class="wz-sub">Grandes eventos en espacios culturales: la producción completa (espacio + técnica + catering) va típicamente de $2M a $10M+ por jornada.</p>' +
         chips(["Menos de $2M", "$2M – $5M", "$5M – $10M", "$10M – $20M", "Más de $20M"], "presupuesto", true) },
@@ -11365,7 +11380,7 @@
         '<h3>¿Qué necesita tu evento? <span style="font-weight:400;font-size:13px;color:var(--muted,#667)">(opcional)</span></h3><p class="wz-sub">Marca todo lo que aplique.</p>' +
         '<div class="wz-chips">' + ["Sonido", "Proyector", "Catering / cocina", "Terraza o exterior", "Accesibilidad", "Estacionamiento"].map((o) =>
           '<button type="button" data-wz-multi="' + o + '"' + ((wz.data.necesidades || []).includes(o) ? ' class="on"' : '') + '>' + o + '</button>').join("") + '</div>' },
-    { id: "urgencia", render: () => '<h3>¿Qué tan pronto lo necesitas?</h3><p class="wz-sub">Para priorizar tu propuesta.</p>' +
+    { id: "urgencia", campo: "urgencia", render: () => '<h3>¿Qué tan pronto lo necesitas?</h3><p class="wz-sub">Para priorizar tu propuesta.</p>' +
         chips(["Es urgente 🔥", "Próximas semanas", "Solo estoy mirando"], "urgencia", true) },
     { id: "contacto", render: () => '<h3>Ya casi — ¿a nombre de quién preparamos la propuesta?</h3>' +
         '<p class="wz-sub">Gratis. Solo le pagas al espacio si cierras.</p>' +
@@ -11397,7 +11412,8 @@
         (wz.paso > 0 ? '<button type="button" class="wz-skip" id="wz-back">← Volver</button>' : "<span></span>") +
         '<span style="display:flex;gap:14px;align-items:center">' +
           (p.skip ? '<button type="button" class="wz-skip" id="wz-skip">' + p.skip + " →</button>" : "") +
-          (p.id === "fecha" || p.id === "necesidades" ? '<button type="button" class="btn primary" id="wz-next">Continuar →</button>' : "") +
+          // paso ya respondido (ej: volviste atrás) → siempre hay camino explícito para avanzar
+          (p.id === "fecha" || p.id === "necesidades" || (p.campo && wz.data[p.campo]) ? '<button type="button" class="btn primary" id="wz-next">Continuar →</button>' : "") +
         "</span>" +
       "</div>" +
       '<div class="wz-trust">Así funciona: nos cuentas tu evento → te proponemos 3–5 espacios con tarifas y condiciones reales → tú eliges y nosotros coordinamos. Respuesta en 48 h.</div></div>';

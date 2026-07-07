@@ -637,16 +637,18 @@
     .listing:hover .listing-photo .ph-fill { transform: scale(1.05); }
   }
   .fav {
-    position: absolute; top: 9px; right: 9px; width: 34px; height: 34px;
-    border: none; border-radius: 50%; background: rgba(255,255,255,.82);
-    backdrop-filter: blur(4px); cursor: pointer; display: grid; place-items: center;
+    position: absolute; top: 9px; right: 9px; height: 32px;
+    border: none; border-radius: 999px; background: rgba(255,255,255,.92);
+    backdrop-filter: blur(4px); cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px; padding: 0 12px;
     color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.2);
-    transition: transform var(--dur), background var(--dur);
+    font: 700 11.5px/1 var(--font-ui);
+    transition: transform var(--dur), background var(--dur), color var(--dur);
   }
-  .fav:hover { transform: scale(1.08); background: #fff; }
-  .fav .ic { width: 19px; height: 19px; fill: none; stroke: currentColor; }
-  .fav.on { color: var(--accent); }
-  .fav.on .ic { fill: var(--accent); stroke: var(--accent); }
+  .fav:hover { transform: scale(1.05); background: #fff; }
+  .fav .ic { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  .fav.on { background: var(--accent); color: #fff; }
+  .fav.on .ic { fill: #fff; stroke: #fff; }
   @media (prefers-reduced-motion: no-preference) {
     .fav.pop { animation: pop .3s ease; }
   }
@@ -1256,7 +1258,7 @@
       </div>
       <div class="ht-right">
         <div class="wz-panel" id="wz-panel">
-          <div class="wz-progress"><div class="wz-bar" id="wz-bar" style="width:25%"></div></div>
+          <div class="wz-progress"><div class="wz-bar" id="wz-bar" style="transform:scaleX(.25)"></div></div>
           <div class="wz-inline-body" id="wz-body"></div>
         </div>
       </div>
@@ -1309,6 +1311,10 @@
     <div class="catrow" id="catrow" role="tablist" aria-label="Categorías"></div>
 
     <!-- buscador de la vitrina (reubicado desde el hero: una sola herramienta arriba) -->
+    <div class="vitrina-head">
+      <h2>Explora los espacios</h2>
+      <p>Guarda tus favoritos — viajan contigo al armar tu propuesta.</p>
+    </div>
     <button type="button" class="search-trigger" id="search-trigger" aria-expanded="false" aria-controls="searchbar">
       <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
       <span class="st-text"><b>Buscar espacios</b><small>Comuna · tipo · fecha</small></span>
@@ -1505,14 +1511,20 @@
   .wz-inline-body { padding: 22px 24px 24px; }
   .wz-step .btn.block { white-space: normal; line-height: 1.3; }
   .wz-panel.wide { max-width: 860px; }
+  /* resultado: el panel ancho toma el centro del hero; el pitch izquierdo ya cumplió su rol */
+  .explore-hero.hero-tool:has(.wz-panel.wide) { grid-template-columns: 1fr; justify-items: center; }
+  .explore-hero.hero-tool:has(.wz-panel.wide) .ht-left { display: none; }
+  .explore-hero.hero-tool:has(.wz-panel.wide) .ht-right { width: 100%; max-width: 860px; }
   .prop-h { font-size: 14px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted, #667); margin: 22px 0 10px; }
   .prop-esp { border: 1px solid var(--line, #e3e5e8); border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
   .pe-head { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
   .pe-swatch { flex: 0 0 52px; height: 52px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
   .pe-head h4 { margin: 0; font-size: 16px; }
   .pe-meta { margin: 2px 0 0; font-size: 12.5px; color: var(--muted, #667); }
-  .pe-est { font-size: 13.5px; margin: 6px 0 10px; }
+  .pe-est { font-size: 14.5px; margin: 6px 0 10px; }
+  .pe-est b { font-size: 17px; font-variant-numeric: tabular-nums; }
   .pe-est span { color: var(--muted, #667); font-size: 12px; }
+  .listing-price b { font-variant-numeric: tabular-nums; }
   .pe-pc { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   @media (max-width: 560px) { .pe-pc { grid-template-columns: 1fr; } }
   .pe-tag { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
@@ -1521,16 +1533,20 @@
   .pe-pc li { margin: 2px 0; }
   .prop-acts { list-style: none; margin: 0; padding: 0; }
   .prop-acts li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--line, #e3e5e8); font-size: 13.5px; }
-  .prop-acts em { color: var(--muted, #667); font-style: normal; white-space: nowrap; }
+  .prop-acts em { color: var(--muted, #667); font-style: normal; white-space: nowrap;
+    font-family: var(--font-mono, monospace); font-size: 12px; font-variant-numeric: tabular-nums; }
   .prop-next { margin-top: 18px; padding: 12px 14px; background: var(--surface, #f2f6ff); border-radius: 10px; font-size: 13.5px; }
   .pe-cerca { margin: 10px 0 0; font-size: 12.5px; color: var(--muted, #667); border-top: 1px dashed var(--line, #e3e5e8); padding-top: 8px; }
   @media (max-width: 560px) { .wz-inline-body { padding: 16px 16px 18px; } }
   .explore-alt { font-size: 13px; color: rgba(255,255,255,.75) !important; margin-top: 14px !important; }
   .video-band { position: relative; margin: 26px 0; border-radius: var(--r-lg, 16px); overflow: hidden; }
   .video-band video { display: block; width: 100%; height: 300px; object-fit: cover; }
-  .vb-caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 24px 18px;
-    color: #fff; font-weight: 700; font-size: 18px;
+  .vb-caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 36px 24px 16px;
+    color: #fff; font-weight: 600; font-size: 15px;
     background: linear-gradient(180deg, transparent, rgba(0,0,0,.65)); }
+  .vitrina-head { margin: 6px 0 14px; }
+  .vitrina-head h2 { font-family: var(--font-display, inherit); font-size: 24px; letter-spacing: -.02em; margin: 0 0 2px; }
+  .vitrina-head p { margin: 0; color: var(--muted, #667); font-size: 13.5px; }
   .ev-lost { appearance: none; background: none; border: none; cursor: pointer; font: inherit;
     color: rgba(255,255,255,.85); font-size: 13px; margin-top: 14px; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
   .prop-bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; z-index: 60;
@@ -1540,18 +1556,29 @@
   .prop-bar .pb-txt { font-size: 14px; font-weight: 600; white-space: nowrap; }
   @media (max-width: 760px) { .prop-bar { bottom: 74px; width: calc(100% - 28px); justify-content: space-between; } }
   .wz .modal-body { min-height: 300px; }
-  .wz-progress { height: 4px; background: var(--line, #e6e6e6); }
-  .wz-progress .wz-bar { height: 100%; background: var(--accent, #2456e6); transition: width .25s; }
-  .wz-step h3 { font-size: 20px; margin: 0 0 4px; }
+  .wz-progress { height: 4px; background: var(--line, #e6e6e6); overflow: hidden; }
+  .wz-progress .wz-bar { height: 100%; width: 100%; background: var(--accent, #2456e6);
+    transform-origin: 0 50%; transition: transform .25s cubic-bezier(.22,1,.36,1); }
+  @media (prefers-reduced-motion: reduce) { .wz-progress .wz-bar { transition: none; } }
+  .wz-step h3 { font-family: var(--font-display, inherit); font-size: 24px; letter-spacing: -.02em; margin: 0 0 4px; text-wrap: balance; }
   .wz-step .wz-sub { color: var(--muted, #667); font-size: 13.5px; margin: 0 0 18px; }
+  .wz-stepnum { font: 600 11px/1 var(--font-mono, monospace); letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted, #667); margin: 0 0 10px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .wz-step { animation: wzIn .18s cubic-bezier(.22,1,.36,1); }
+    @keyframes wzIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  }
+  .wz-chips button:focus-visible, .wz-step .btn:focus-visible, .wz-skip:focus-visible, .fav:focus-visible {
+    outline: 2px solid var(--accent, #0495FE); outline-offset: 2px; }
   .wz-chips { display: flex; flex-wrap: wrap; gap: 10px; }
   .wz-chips button { appearance: none; cursor: pointer; font: inherit; font-size: 15px;
-    border: 1.5px solid var(--line, #ddd); background: var(--bg, #fff); border-radius: 12px; padding: 12px 16px;
+    min-height: 48px; display: inline-flex; align-items: center;
+    border: 1.5px solid var(--line, #ddd); background: var(--bg, #fff); border-radius: 12px; padding: 12px 18px;
     transition: background .15s, border-color .15s, color .15s, box-shadow .15s; }
   .wz-chips button:hover { border-color: var(--accent, #2456e6); }
-  /* seleccionado ≠ hover: relleno sólido, sin ambigüedad */
+  /* seleccionado ≠ hover: relleno sólido, sin ambigüedad (sin glow: el fill + ✓ bastan) */
   .wz-chips button.on { background: var(--accent, #2456e6); border-color: var(--accent, #2456e6);
-    color: #fff; font-weight: 700; box-shadow: 0 4px 16px rgba(36, 86, 230, .35); }
+    color: #fff; font-weight: 700; }
   .wz-chips button.on::before { content: "✓ "; }
   .wz-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; gap: 10px; }
   .wz-skip { appearance: none; background: none; border: none; cursor: pointer; font: inherit;
@@ -9794,6 +9821,7 @@
   const ICON = {
     search:   (c)=>P('<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>', c),
     heart:    (c)=>P('<path d="M12 20s-7-4.4-9.2-8.5C1.3 8.3 3 5 6.2 5 8 5 9.3 6 12 8.7 14.7 6 16 5 17.8 5 21 5 22.7 8.3 21.2 11.5 19 15.6 12 20 12 20Z"/>', c),
+    bookmark: (c)=>P('<path d="M6.5 3.5h11a.5.5 0 0 1 .5.5v16.4l-6-4.1-6 4.1V4a.5.5 0 0 1 .5-.5Z"/>', c),
     star:     (c)=>P('<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 17l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/>', c),
     users:    (c)=>P('<circle cx="9" cy="8" r="3.2"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5"/><path d="M16 5.5a3 3 0 0 1 0 5.5M21 19c0-2.6-1.4-4.2-3.5-4.8"/>', c),
     ruler:    (c)=>P('<rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M7 8v3M11 8v4M15 8v3M19 8v4"/>', c),
@@ -10329,9 +10357,9 @@
 
   function favBtn(s) {
     const on = DB.meta.favoritos.includes(s.id);
-    // ponytail: corazón + etiqueta (heat maps: corazón solo = taps a ciegas)
+    // bookmark + etiqueta (anti-referencia: nada de corazones tipo Airbnb; heat maps: icono solo = taps a ciegas)
     return '<button class="fav' + (on ? " on" : "") + '" data-fav="' + s.id + '" aria-pressed="' + on +
-      '" aria-label="' + (on ? "Quitar de mi propuesta" : "Guardar en mi propuesta") + '">' + ICON.heart("ic") +
+      '" aria-label="' + (on ? "Quitar de mi propuesta" : "Guardar en mi propuesta") + '">' + ICON.bookmark("ic") +
       '<span class="fav-lbl">' + (on ? "Guardado" : "Guardar") + '</span></button>';
   }
   function photo(s, variant, cls, withIndex) {
@@ -11361,8 +11389,10 @@
     const p = WZ_PASOS[wz.paso];
     $("#wz-panel").classList.remove("wide");
     // la barra nunca parte en 0: efecto endowed progress (HeadBox parte en 27%)
-    $("#wz-bar").style.width = (25 + (wz.paso / WZ_PASOS.length) * 75) + "%";
-    $("#wz-body").innerHTML = '<div class="wz-step">' + (wz.paso === 0 ? wzFavsHtml() : "") + p.render() +
+    $("#wz-bar").style.transform = "scaleX(" + ((25 + (wz.paso / WZ_PASOS.length) * 75) / 100) + ")";
+    $("#wz-body").innerHTML = '<div class="wz-step">' +
+      '<p class="wz-stepnum">Paso ' + (wz.paso + 1) + " de " + WZ_PASOS.length + "</p>" +
+      (wz.paso === 0 ? wzFavsHtml() : "") + p.render() +
       '<div class="wz-foot">' +
         (wz.paso > 0 ? '<button type="button" class="wz-skip" id="wz-back">← Volver</button>' : "<span></span>") +
         '<span style="display:flex;gap:14px;align-items:center">' +
@@ -11445,9 +11475,10 @@
       return pts + avgRating(s);
     };
     let list = DB.espacios.filter((s) => s.capacidad >= paxMin);
+    wz.relajado = false;
     if (budMax) list = list.filter((s) => s.precio_dia <= budMax);
-    if (list.length < 3) list = DB.espacios.filter((s) => s.capacidad >= paxMin); // relaja presupuesto antes que capacidad
-    if (list.length < 3) list = DB.espacios.slice();
+    if (list.length < 3) { list = DB.espacios.filter((s) => s.capacidad >= paxMin); wz.relajado = true; } // relaja presupuesto antes que capacidad
+    if (list.length < 3) { list = DB.espacios.slice(); wz.relajado = true; }
     return list.sort((a, b) => puntaje(b) - puntaje(a)).slice(0, 5);
   }
   /* Propuesta enriquecida: estimación de costos, pros/contras y actividades — todo determinístico */
@@ -11488,7 +11519,7 @@
   }
   function wzShowResultado() {
     const sel = wzMatch().slice(0, 3), d = wz.data;
-    $("#wz-bar").style.width = "100%";
+    $("#wz-bar").style.transform = "scaleX(1)";
     $("#wz-panel").classList.add("wide");
     const bloque = (s) => {
       const pc = wzProsContras(s), est = wzEstimacion(s);
@@ -11504,7 +11535,9 @@
     $("#wz-body").innerHTML = '<div class="wz-step">' +
       "<h3>Tu propuesta, " + esc((d.nombre || "").split(" ")[0]) + " 🎉</h3>" +
       '<p class="wz-sub">' + esc(d.tipo || "Evento") + " · " + esc(d.pax || "—") + " personas · " + (d.fecha ? esc(d.fecha) + (d.flex ? " (flexible)" : "") : "fecha por definir") + " · presupuesto " + esc(d.presupuesto || "abierto") + "</p>" +
-      "<h4 class='prop-h'>Te proponemos estos " + sel.length + " lugares</h4>" + sel.map(bloque).join("") +
+      "<h4 class='prop-h'>Te proponemos estos " + sel.length + " lugares</h4>" +
+      (wz.relajado ? '<p class="wz-sub" style="margin-top:-4px">Nota: ampliamos el rango para darte más opciones — lo afinamos contigo al confirmar.</p>' : "") +
+      sel.map(bloque).join("") +
       "<h4 class='prop-h'>Actividades para hacerlo memorable</h4>" +
       '<ul class="prop-acts">' + acts.map((a) => "<li><span>" + a[0] + "</span><em>" + a[1] + "</em></li>").join("") + "</ul>" +
       '<button type="button" class="wz-skip" id="wz-mapa" style="margin-top:8px">Ver qué hay cerca de cada espacio en el mapa (comida, hoteles, metro) →</button>' +

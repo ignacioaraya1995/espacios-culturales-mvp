@@ -11408,8 +11408,8 @@
       (wz.data[campo] === o ? ' class="on"' : '') + (avanzar ? ' data-wz-next="1"' : '') + '>' + esc(o) + '</button>').join("") + '</div>';
   }
   const WZ_PASOS = [
-    { id: "tipo", campo: "tipo", render: () => '<h3>¿Qué evento quieres hacer?</h3><p class="wz-sub">Un tap y seguimos.</p>' +
-        chips(["🎉 Fiesta corporativa", "🚀 Lanzamiento", "🍽️ Cena privada", "💍 Matrimonio íntimo", "🎤 Concierto privado", "✨ Otro"], "tipo", true) },
+    { id: "tipo", campo: "tipo", render: () => '<h3>¿Qué evento quieres hacer?</h3><p class="wz-sub">Elige una opción y presiona Continuar.</p>' +
+        chips(["🎉 Fiesta corporativa", "🚀 Lanzamiento", "🍽️ Cena privada", "💍 Matrimonio íntimo", "🎤 Concierto privado", "✨ Otro"], "tipo", false) },
     // ponytail: 7→4 pasos — el matching real solo usa personas+presupuesto; la urgencia la mide
     // el cierre (partir ahora vs esperar) y las necesidades se afinan con el concierge
     { id: "pax", campo: "pax", render: () => '<h3>¿Cuántas personas y cuándo?</h3><p class="wz-sub">Aproximado. Si aún no tienes fecha, sigue no más.</p>' +
@@ -11420,7 +11420,7 @@
     { id: "presupuesto", campo: "presupuesto", skip: "Prefiero que me propongan", render: () =>
         '<h3>¿Presupuesto del evento?</h3>' +
         '<p class="wz-sub">Producción completa (espacio + técnica + catering): típicamente $2M a $10M+ por jornada.</p>' +
-        chips(["Menos de $2M", "$2M – $5M", "$5M – $10M", "$10M – $20M", "Más de $20M"], "presupuesto", true) },
+        chips(["Menos de $2M", "$2M – $5M", "$5M – $10M", "$10M – $20M", "Más de $20M"], "presupuesto", false) },
     { id: "contacto", render: () => '<h3>Ya casi — ¿a nombre de quién preparamos la propuesta?</h3>' +
         '<p class="wz-sub">Gratis. Solo le pagas al espacio si cierras.</p>' +
         // form + autocomplete: el navegador rellena solo (name/tel/email estándar)
@@ -11451,8 +11451,8 @@
         (wz.paso > 0 ? '<button type="button" class="wz-skip" id="wz-back">← Volver</button>' : "<span></span>") +
         '<span style="display:flex;gap:14px;align-items:center">' +
           (p.skip ? '<button type="button" class="wz-skip" id="wz-skip">' + p.skip + " →</button>" : "") +
-          // paso combinado o ya respondido → siempre hay camino explícito para avanzar
-          (p.id === "pax" || (p.campo && wz.data[p.campo]) ? '<button type="button" class="btn primary" id="wz-next">Continuar →</button>' : "") +
+          // avance SIEMPRE explícito: el tap selecciona, solo Continuar avanza
+          (p.id !== "contacto" ? '<button type="button" class="btn primary" id="wz-next">Continuar →</button>' : "") +
         "</span>" +
       "</div>" +
       // la explicación solo en el paso 1: después es ruido vertical
@@ -11479,7 +11479,6 @@
     if (set) {
       wz.data[set.dataset.wzSet] = set.dataset.wzVal; wzSave();
       $$('[data-wz-set="' + set.dataset.wzSet + '"]', $("#wz-body")).forEach((b) => b.classList.toggle("on", b === set));
-      if (set.dataset.wzNext) setTimeout(wzNext, 180);
       return;
     }
     const multi = e.target.closest("[data-wz-multi]");
@@ -11489,7 +11488,12 @@
       multi.classList.toggle("on"); wzSave(); return;
     }
     if (e.target.closest("#wz-back")) { wzGuardaCampos(); wz.paso--; wzRender(); return; }
-    if (e.target.closest("#wz-skip") || e.target.closest("#wz-next")) { wzGuardaCampos(); wzNext(); return; }
+    if (e.target.closest("#wz-skip")) { wzGuardaCampos(); wzNext(); return; }
+    if (e.target.closest("#wz-next")) {
+      const req = WZ_PASOS[wz.paso].campo;
+      if (req && !wz.data[req]) { toast("Elige una opción para continuar"); return; }
+      wzGuardaCampos(); wzNext(); return;
+    }
     if (e.target.closest("#wz-enviar")) {
       wzGuardaCampos();
       if (!wz.data.nombre) { toast("Cuéntanos tu nombre"); $("#wz-nombre").focus(); return; }

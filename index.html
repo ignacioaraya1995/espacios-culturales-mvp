@@ -9,6 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<!-- Leaflet: pines con coordenadas reales (el iframe OSM reajusta su bbox y desalinea overlays %) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
 <!--
   ============================================================================
   CURADURÍA — MVP / mockup clickeable (un solo archivo, sin build)
@@ -1336,13 +1339,7 @@
         </div>
         <aside class="red-map" aria-label="Mapa sectorial propuesto">
           <div class="red-map-frame">
-            <iframe
-              class="osm-map"
-              title="Mapa OpenStreetMap del corredor Alameda"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-70.7440%2C-33.4660%2C-70.6100%2C-33.4250&layer=mapnik"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <div class="red-map-pins" id="red-map-pins" aria-label="Espacios en mapa"></div>
+            <div class="osm-map" id="red-leaflet" role="application" aria-label="Mapa de espacios Red Alameda"></div>
           </div>
           <div class="red-map-body">
             <b>Mapa del sector por espacio</b>
@@ -1376,15 +1373,8 @@
         <div class="map-filters" id="map-filters" aria-label="Filtros de mapa"></div>
         <div class="map-results" id="map-results" aria-live="polite"></div>
       </aside>
-      <div class="map-stage" aria-label="Mockup mapa cultural">
-        <iframe
-          class="osm-map"
-          title="Mapa OpenStreetMap con espacios y servicios cercanos"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=-70.7440%2C-33.4660%2C-70.6100%2C-33.4250&layer=mapnik"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <div class="map-overlay" id="map-overlay" aria-hidden="true"></div>
-        <span class="map-source map-source-abs">Mapa base: © OpenStreetMap contributors / ODbL.</span>
+      <div class="map-stage" aria-label="Mapa de espacios y servicios cercanos">
+        <div class="osm-map" id="map-leaflet" role="application" aria-label="Mapa interactivo"></div>
       </div>
     </div>
   </section>
@@ -1604,6 +1594,25 @@
   .wz-favs { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
   .wz-favs span { font-size: 12px; background: var(--surface, #f2f3f5); border-radius: 999px; padding: 4px 10px; }
   .fav-lbl { font-size: 11.5px; font-weight: 700; margin-left: 5px; }
+  .wz-loading { list-style: none; margin: 10px 0 0; padding: 0; }
+  .wz-loading li { display: flex; align-items: center; gap: 10px; padding: 9px 0; font-size: 14.5px; color: var(--muted, #667); }
+  .wz-loading li::before { content: ""; width: 16px; height: 16px; border-radius: 50%; flex: 0 0 16px;
+    border: 2px solid var(--line, #ddd); border-top-color: var(--accent, #0495FE); animation: wzSpin .7s linear infinite; }
+  .wz-loading li.done { color: var(--ink, #111); }
+  .wz-loading li.done::before { content: "\u2713"; border: none; animation: none; color: #fff;
+    background: var(--accent, #0495FE); display: grid; place-items: center; font-size: 10px; font-weight: 800; }
+  @keyframes wzSpin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .wz-loading li::before { animation: none; border-top-color: var(--line, #ddd); } }
+  /* formulario de contacto: campos cómodos, foco claro */
+  .wz-step .field { margin-bottom: 12px; }
+  .wz-step .field label { display: block; font: 600 12px/1 var(--font-ui, inherit); color: var(--muted, #667); margin-bottom: 6px; }
+  .wz-step .field input { width: 100%; box-sizing: border-box; font: inherit; font-size: 15px; padding: 13px 14px;
+    border: 1.5px solid var(--line, #ddd); border-radius: 10px; background: var(--bg, #fff); }
+  .wz-step .field input:focus-visible { outline: 2px solid var(--accent, #0495FE); outline-offset: 1px; border-color: var(--accent, #0495FE); }
+  .wz-step .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 560px) { .wz-step .row2 { grid-template-columns: 1fr; } }
+  /* leaflet: sin el margen-hack del iframe */
+  #map-leaflet, #red-leaflet { margin-bottom: 0 !important; border-radius: 12px; z-index: 0; }
 </style>
 <div class="prop-bar" id="prop-bar" hidden>
   <span class="pb-txt" id="prop-bar-txt">Mi propuesta (0)</span>
@@ -9883,12 +9892,12 @@
   const RED_MEDIA = {
     source: "https://www.redalamedacultural.cl/secciones/espacios-culturales-7550",
     places: [
-      { name: "Centro Cultural CIMA", modulo: "2242", address: "Merced 22, Santiago", status: "Sin actividades publicadas en el scrape del módulo", pin: [82, 31], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzc0MjgyX2NlbnRyb19jdWx0dXJhbF9jaW1hLnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsfX0=" },
-      { name: "Cine Arte Alameda", modulo: "2243", address: "Arturo Prat 33, Santiago", status: "4 actividades encontradas en el scrape del módulo", pin: [72, 51], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzg2NTQwX2NpbmVhcnRlYWxhbWVkYS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsiZml0IjoiaW5zaWRlIn0sInJvdGF0ZSI6bnVsbH19" },
-      { name: "Librería GAM", modulo: "2244", address: "Centro Gabriela Mistral", status: "Ficha pública de espacio cultural", pin: [78, 36], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzE4NzdfbGlicmVyaWFfZ2FtLnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsfX0=" },
-      { name: "Museo Nacional de Bellas Artes", modulo: "2245", address: "Parque Forestal, Santiago", status: "Ficha pública de espacio cultural", pin: [75, 25], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzY0MTk3X211c2VvX25hY19kZV9iZWxsYXNfYXJ0ZXMucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6Imluc2lkZSJ9LCJyb3RhdGUiOm51bGx9fQ==" },
-      { name: "Museo de la Solidaridad Salvador Allende", modulo: "2247", address: "República, Santiago", status: "Ficha pública de espacio cultural", pin: [57, 60], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzkyMzI1X211c2VvX3NzYS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsiZml0IjoiaW5zaWRlIn0sInJvdGF0ZSI6bnVsbH19" },
-      { name: "Centro Cultural CEINA", modulo: "2142", address: "Instituto Nacional, Santiago", status: "Ficha pública de espacio cultural", pin: [74, 56], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzQ3MTQxX2NlaW5hLnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsfX0=" }
+      { name: "Centro Cultural CIMA", modulo: "2242", geo: [-33.4363, -70.6420], address: "Merced 22, Santiago", status: "Sin actividades publicadas en el scrape del módulo", pin: [82, 31], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzc0MjgyX2NlbnRyb19jdWx0dXJhbF9jaW1hLnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsfX0=" },
+      { name: "Cine Arte Alameda", modulo: "2243", geo: [-33.4453, -70.6501], address: "Arturo Prat 33, Santiago", status: "4 actividades encontradas en el scrape del módulo", pin: [72, 51], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzg2NTQwX2NpbmVhcnRlYWxhbWVkYS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsiZml0IjoiaW5zaWRlIn0sInJvdGF0ZSI6bnVsbH19" },
+      { name: "Librería GAM", modulo: "2244", geo: [-33.4369, -70.6428], address: "Centro Gabriela Mistral", status: "Ficha pública de espacio cultural", pin: [78, 36], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzE4NzdfbGlicmVyaWFfZ2FtLnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsfX0=" },
+      { name: "Museo Nacional de Bellas Artes", modulo: "2245", geo: [-33.4353, -70.6410], address: "Parque Forestal, Santiago", status: "Ficha pública de espacio cultural", pin: [75, 25], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzY0MTk3X211c2VvX25hY19kZV9iZWxsYXNfYXJ0ZXMucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7ImZpdCI6Imluc2lkZSJ9LCJyb3RhdGUiOm51bGx9fQ==" },
+      { name: "Museo de la Solidaridad Salvador Allende", modulo: "2247", geo: [-33.4479, -70.6699], address: "República, Santiago", status: "Ficha pública de espacio cultural", pin: [57, 60], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzkyMzI1X211c2VvX3NzYS5wbmciLCJlZGl0cyI6eyJyZXNpemUiOnsiZml0IjoiaW5zaWRlIn0sInJvdGF0ZSI6bnVsbH19" },
+      { name: "Centro Cultural CEINA", modulo: "2142", geo: [-33.4450, -70.6505], address: "Instituto Nacional, Santiago", status: "Ficha pública de espacio cultural", pin: [74, 56], img: "https://images.ligup2.com/eyJidWNrZXQiOiJsaWd1cC12MiIsImtleSI6ImJhcnJpb3NkZWJvcmRlL3VzZXJzLzQ3MTQxX2NlaW5hLnBuZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsfX0=" }
     ],
     agenda: [
       { source: "Cine Arte Alameda", title: "Ale Castillo en concierto", date: "24 jun 2026 · 20:00", place: "Arturo Prat 33, Santiago", status: "Inscripción no disponible" },
@@ -9912,15 +9921,15 @@
     { id: "route", label: "Patrimonio" }
   ];
   const MAP_POIS = [
-    { type: "parking", label: "Parking Merced", detail: "Estacionamiento cercano a CIMA", pin: [81, 36] },
-    { type: "parking", label: "Parking Arturo Prat", detail: "Estacionamiento para Cine Arte Alameda", pin: [70, 58] },
-    { type: "metro", label: "Metro U. Católica", detail: "Acceso peatonal a GAM y Alameda", pin: [77, 42] },
-    { type: "metro", label: "Metro Santa Lucía", detail: "Conexión Bellas Artes / Centro", pin: [74, 49] },
-    { type: "food", label: "Barrio Lastarria", detail: "Cafés, restaurantes y barras", pin: [78, 31] },
-    { type: "food", label: "Gastronomía República", detail: "Opciones cerca de MSSA", pin: [55, 66] },
-    { type: "hotel", label: "Hotel Alameda", detail: "Hotelería para equipos y visitantes", pin: [68, 47] },
-    { type: "hotel", label: "Hotel Forestal", detail: "Alojamiento cercano a Bellas Artes", pin: [73, 20] },
-    { type: "route", label: "Ruta patrimonial Alameda", detail: "Recorrido sugerido: CIMA, GAM, Bellas Artes", pin: [76, 34] }
+    { type: "parking", label: "Parking Merced", geo: [-33.4360, -70.6440], detail: "Estacionamiento cercano a CIMA", pin: [81, 36] },
+    { type: "parking", label: "Parking Arturo Prat", geo: [-33.4456, -70.6497], detail: "Estacionamiento para Cine Arte Alameda", pin: [70, 58] },
+    { type: "metro", label: "Metro U. Católica", geo: [-33.4406, -70.6402], detail: "Acceso peatonal a GAM y Alameda", pin: [77, 42] },
+    { type: "metro", label: "Metro Santa Lucía", geo: [-33.4438, -70.6446], detail: "Conexión Bellas Artes / Centro", pin: [74, 49] },
+    { type: "food", label: "Barrio Lastarria", geo: [-33.4377, -70.6396], detail: "Cafés, restaurantes y barras", pin: [78, 31] },
+    { type: "food", label: "Gastronomía República", geo: [-33.4470, -70.6690], detail: "Opciones cerca de MSSA", pin: [55, 66] },
+    { type: "hotel", label: "Hotel Alameda", geo: [-33.4443, -70.6490], detail: "Hotelería para equipos y visitantes", pin: [68, 47] },
+    { type: "hotel", label: "Hotel Forestal", geo: [-33.4356, -70.6392], detail: "Alojamiento cercano a Bellas Artes", pin: [73, 20] },
+    { type: "route", label: "Ruta patrimonial Alameda", geo: [-33.4410, -70.6470], detail: "Recorrido sugerido: CIMA, GAM, Bellas Artes", pin: [76, 34] }
   ];
   const mapState = { q: "", filter: "todos" };
   // mapea equipamiento (texto) a un icono razonable
@@ -10117,6 +10126,7 @@
     });
     document.body.dataset.page = name; // en mobile, el detalle oculta el bottom-nav (lo reemplaza la barra de reserva)
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+    if (name === "mapa") setTimeout(ensureMainMap, 30);
 
     if (name === "explorar")   renderListings();
     if (name === "mapa")       renderMapPage();
@@ -10217,6 +10227,10 @@
       el.classList.toggle("on", on);
       if (el.tagName === "BUTTON") el.setAttribute("aria-pressed", on);
     });
+    Object.keys(redMarkers).forEach((m) => {
+      redMarkers[m].setStyle({ radius: m === modulo ? 12 : 9, fillColor: m === modulo ? "#0379D6" : POI_COLOR.space });
+    });
+    if (redMap && redMarkers[modulo]) redMap.panTo(redMarkers[modulo].getLatLng());
     renderRedDetail(modulo);
     if (shouldOpen) openModal("#modal-red-space");
   }
@@ -10240,15 +10254,7 @@
         if (b) selectRedPlace(b.dataset.redPlace, true);
       };
     }
-    if (pins) {
-      pins.innerHTML = RED_MEDIA.places.map((x) =>
-        '<button type="button" class="red-map-pin" style="left:' + x.pin[0] + '%;top:' + x.pin[1] + '%" data-red-place="' + esc(x.modulo) + '" aria-label="' + esc(x.name) + '" aria-pressed="' + (x.modulo === selectedRedModulo) + '"></button>'
-      ).join("");
-      pins.onclick = (e) => {
-        const b = e.target.closest("[data-red-place]");
-        if (b) selectRedPlace(b.dataset.redPlace, true);
-      };
-    }
+    ensureRedMap();
     if (legend) {
       legend.innerHTML = RED_MEDIA.places.map((x) =>
         '<button type="button" data-red-place="' + esc(x.modulo) + '" aria-pressed="' + (x.modulo === selectedRedModulo) + '">' + esc(x.name) + '</button>'
@@ -10270,18 +10276,52 @@
     }
     selectRedPlace(selectedRedModulo, false);
   }
+  /* ===== Leaflet: pines con coordenadas reales (fix: el iframe OSM reajusta bbox y desalineaba los %) ===== */
+  const MAP_CENTER = [-33.4420, -70.6500];
+  const POI_COLOR = { space: "#0495FE", parking: "#455A64", food: "#C2410C", hotel: "#7C3AED", route: "#15803D", metro: "#0F766E" };
+  let mainMap = null, mainLayer = null, redMap = null, redMarkers = {};
+  function leafletReady() { return typeof window.L !== "undefined"; }
+  function mkMap(id, zoom) {
+    const m = L.map(id, { scrollWheelZoom: false }).setView(MAP_CENTER, zoom);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "\u00a9 OpenStreetMap contributors" }).addTo(m);
+    return m;
+  }
+  function poiMarker(item) {
+    return L.circleMarker(item.geo, {
+      radius: item.type === "space" ? 10 : 7,
+      color: "#fff", weight: 2, fillColor: POI_COLOR[item.type] || "#333", fillOpacity: 1
+    }).bindPopup("<b>" + esc(item.label) + "</b><br>" + esc(item.detail || ""));
+  }
+  function ensureMainMap() {
+    if (!leafletReady() || !$("#map-leaflet")) return;
+    if (!mainMap) { mainMap = mkMap("map-leaflet", 14); mainLayer = L.layerGroup().addTo(mainMap); renderMapPage(); }
+    setTimeout(() => mainMap.invalidateSize(), 60);
+  }
+  function ensureRedMap() {
+    if (!leafletReady() || !$("#red-leaflet") || redMap) return;
+    redMap = mkMap("red-leaflet", 13);
+    RED_MEDIA.places.forEach((p) => {
+      if (!p.geo) return;
+      const mk = L.circleMarker(p.geo, { radius: 9, color: "#fff", weight: 2, fillColor: POI_COLOR.space, fillOpacity: 1 })
+        .addTo(redMap).bindTooltip(p.name);
+      mk.on("click", () => selectRedPlace(p.modulo, true));
+      redMarkers[p.modulo] = mk;
+    });
+    setTimeout(() => redMap.invalidateSize(), 60);
+  }
   function mapItems() {
     const spaces = RED_MEDIA.places.map((p) => ({
       type: "space",
       label: p.name,
       detail: p.address + " · Red Alameda módulo " + p.modulo,
-      pin: p.pin
+      pin: p.pin,
+      geo: p.geo
     }));
     return spaces.concat(MAP_POIS);
   }
   function renderMapPage() {
-    const filters = $("#map-filters"), results = $("#map-results"), overlay = $("#map-overlay");
-    if (!filters || !results || !overlay) return;
+    const filters = $("#map-filters"), results = $("#map-results");
+    if (!filters || !results) return;
     filters.innerHTML = MAP_FILTERS.map((f) =>
       '<button type="button" class="map-filter ' + (mapState.filter === f.id ? "on" : "") + '" data-map-filter="' + f.id + '">' + esc(f.label) + '</button>'
     ).join("");
@@ -10293,10 +10333,10 @@
     results.innerHTML = items.length ? items.map((item) =>
       '<article class="map-result"><b>' + esc(item.label) + '</b><span>' + esc(item.detail) + '</span></article>'
     ).join("") : '<div class="empty" style="padding:20px"><h3>Sin resultados</h3><p>Prueba con estacionamiento, hotel, metro o patrimonio.</p></div>';
-    overlay.innerHTML = items.map((item) => {
-      const mark = item.type === "space" ? "C" : item.type === "parking" ? "P" : item.type === "metro" ? "M" : item.type === "food" ? "G" : item.type === "hotel" ? "H" : "R";
-      return '<span class="map-poi ' + esc(item.type) + '" style="left:' + item.pin[0] + '%;top:' + item.pin[1] + '%" title="' + esc(item.label) + '">' + mark + '</span>';
-    }).join("");
+    if (mainLayer) {
+      mainLayer.clearLayers();
+      items.forEach((item) => { if (item.geo) poiMarker(item).addTo(mainLayer); });
+    }
   }
   $("#map-q") && $("#map-q").addEventListener("input", (e) => {
     mapState.q = e.target.value.trim();
@@ -11387,8 +11427,8 @@
         '<form id="wz-form" autocomplete="on" onsubmit="return false">' +
         '<div class="field"><label for="wz-nombre">Nombre</label><input type="text" id="wz-nombre" name="name" autocomplete="name" value="' + esc(wz.data.nombre || "") + '" placeholder="Camila Rojas" /></div>' +
         '<div class="row2">' +
-        '<div class="field"><label for="wz-fono">WhatsApp</label><input type="tel" id="wz-fono" name="tel" autocomplete="tel" value="' + esc(wz.data.fono || "") + '" placeholder="+569 1234 5678" /></div>' +
-        '<div class="field"><label for="wz-email">Email</label><input type="email" id="wz-email" name="email" autocomplete="email" value="' + esc(wz.data.email || "") + '" placeholder="camila@empresa.cl" /></div>' +
+        '<div class="field"><label for="wz-fono">WhatsApp</label><input type="tel" id="wz-fono" name="phone" inputmode="tel" autocomplete="tel" value="' + esc(wz.data.fono || "") + '" placeholder="+569 1234 5678" /></div>' +
+        '<div class="field"><label for="wz-email">Email <span class="hint">(opcional)</span></label><input type="email" id="wz-email" name="email" autocomplete="email" value="' + esc(wz.data.email || "") + '" placeholder="camila@empresa.cl" /></div>' +
         '</div>' +
         '<button type="submit" class="btn primary lg block" id="wz-enviar">Genera tu pre-propuesta →</button>' +
         '</form>' },
@@ -11454,7 +11494,7 @@
       wzGuardaCampos();
       if (!wz.data.nombre) { toast("Cuéntanos tu nombre"); $("#wz-nombre").focus(); return; }
       if (!wz.data.fono) { toast("Necesitamos tu WhatsApp para enviarte la propuesta"); $("#wz-fono").focus(); return; }
-      wzShowResultado();
+      wzShowLoading(wzShowResultado);
       return;
     }
     if (e.target.closest("#wz-pdf")) { wzAbrirPropuesta(); track("wz_pdf"); return; }
@@ -11565,6 +11605,16 @@
       '<div class="wz-trust">Propuesta automática y referencial sobre nuestra base de espacios. Un humano la revisa antes de contactarte.</div></div>';
     track("wz_resultado");
   }
+  function wzShowLoading(cb) {
+    $("#wz-panel").classList.remove("wide");
+    $("#wz-bar").style.transform = "scaleX(.97)";
+    $("#wz-body").innerHTML = '<div class="wz-step"><h3>Armando tu propuesta\u2026</h3>' +
+      '<ul class="wz-loading"><li>Filtrando por aforo y fecha</li><li>Cruzando presupuesto y tarifas</li><li>Eligiendo los 3 que mejor calzan</li></ul></div>';
+    const items = $$(".wz-loading li");
+    const paso = matchMedia("(prefers-reduced-motion: reduce)").matches ? 120 : 380;
+    items.forEach((li, i) => setTimeout(() => li.classList.add("done"), paso * (i + 1)));
+    setTimeout(cb, paso * items.length + 260);
+  }
   function wzAbrirPropuesta() {
     const d = wz.data, sel = wzMatch().slice(0, 3);
     const hoy = new Date().toLocaleDateString("es-CL", { day: "numeric", month: "long", year: "numeric" });
@@ -11623,6 +11673,10 @@
   goTab(defaultTab());
   updatePropBar();
   wzRender(); // la herramienta parte abierta en el paso 1 — cero clicks para empezar
+  window.addEventListener("load", () => {
+    ensureRedMap();
+    if (document.body.dataset.page === "mapa") ensureMainMap();
+  });
 })();
 </script>
 </body>

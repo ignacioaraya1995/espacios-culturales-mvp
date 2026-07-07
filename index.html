@@ -1264,49 +1264,9 @@
       </div>
     </div>
 
-    <!-- video showcase: baja de héroe a banda (el protagonista ahora es la herramienta) -->
-    <section class="video-band" aria-label="Espacios culturales de Santiago">
-      <video src="hero.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
-      <div class="vb-caption">Espacios con historia, para eventos que se recuerdan</div>
-    </section>
 
-    <section class="red-brief" aria-labelledby="red-brief-title">
-      <div class="red-brief-grid">
-        <div>
-          <p class="eyebrow accent">RED ALAMEDA CULTURAL · 50+ INSTITUCIONES</p>
-          <h2 id="red-brief-title">Vitrina para arriendo, programación y marcas</h2>
-          <p>Feedback incorporado: cada espacio debe vender disponibilidad, oferta cultural y activaciones, cruzado con información útil del sector y rutas de turismo cultural.</p>
-          <div class="red-usecases">
-            <div class="red-usecase"><b>Arriendo venue</b><span>Ficha, aforo, precio, equipamiento, disponibilidad y contacto.</span></div>
-            <div class="red-usecase"><b>Oferta cultural</b><span>Agenda, muestras, funciones y actividades vinculadas al espacio.</span></div>
-            <div class="red-usecase"><b>Activaciones</b><span>Marcas, turismo cultural, conocimiento, comunidad y sponsors.</span></div>
-          </div>
-        </div>
-        <aside class="red-map" aria-label="Mapa sectorial propuesto">
-          <div class="red-map-frame">
-            <iframe
-              class="osm-map"
-              title="Mapa OpenStreetMap del corredor Alameda"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-70.7440%2C-33.4660%2C-70.6100%2C-33.4250&layer=mapnik"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <div class="red-map-pins" id="red-map-pins" aria-label="Espacios en mapa"></div>
-          </div>
-          <div class="red-map-body">
-            <b>Mapa del sector por espacio</b>
-            <span class="map-source">Mapa base: © OpenStreetMap contributors / ODbL.</span>
-            <div class="red-map-legend" id="red-map-legend" aria-label="Seleccionar espacio en mapa"></div>
-            <ul>
-              <li><svg class="ic sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg><span>Cómo llegar, metro, estacionamientos y hoteles cercanos.</span></li>
-              <li><svg class="ic sm" viewBox="0 0 24 24"><path d="M4 18h16M6 18V9l6-4 6 4v9"/></svg><span>Gastronomía local y recorrido patrimonial sugerido.</span></li>
-            </ul>
-          </div>
-        </aside>
-      </div>
-      <div class="red-space-grid" id="red-space-grid" aria-label="Espacios scrapeados desde Red Alameda"></div>
-      <p class="red-inline-help">Selecciona un espacio, por favor, para ver foto, agenda y fuente completa sin salir del MVP.</p>
-      <div class="red-agenda" id="red-agenda" aria-label="Programación scrapeada desde Red Alameda"></div>
-    </section>
+
+
 
     <div class="catrow" id="catrow" role="tablist" aria-label="Categorías"></div>
 
@@ -1355,6 +1315,50 @@
     </div>
 
     <div class="grid-listings" id="listings-grid"></div>
+
+    <!-- video showcase: baja de héroe a banda (el protagonista ahora es la herramienta) -->
+    <section class="video-band" aria-label="Espacios culturales de Santiago">
+      <video src="hero.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+      <div class="vb-caption">Espacios con historia, para eventos que se recuerdan</div>
+    </section>
+
+    <section class="red-brief" aria-labelledby="red-brief-title">
+      <div class="red-brief-grid">
+        <div>
+          <p class="eyebrow accent">RED ALAMEDA CULTURAL · 50+ INSTITUCIONES</p>
+          <h2 id="red-brief-title">Vitrina para arriendo, programación y marcas</h2>
+          <p>Feedback incorporado: cada espacio debe vender disponibilidad, oferta cultural y activaciones, cruzado con información útil del sector y rutas de turismo cultural.</p>
+          <div class="red-usecases">
+            <div class="red-usecase"><b>Arriendo venue</b><span>Ficha, aforo, precio, equipamiento, disponibilidad y contacto.</span></div>
+            <div class="red-usecase"><b>Oferta cultural</b><span>Agenda, muestras, funciones y actividades vinculadas al espacio.</span></div>
+            <div class="red-usecase"><b>Activaciones</b><span>Marcas, turismo cultural, conocimiento, comunidad y sponsors.</span></div>
+          </div>
+        </div>
+        <aside class="red-map" aria-label="Mapa sectorial propuesto">
+          <div class="red-map-frame">
+            <iframe
+              class="osm-map"
+              title="Mapa OpenStreetMap del corredor Alameda"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-70.7440%2C-33.4660%2C-70.6100%2C-33.4250&layer=mapnik"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="red-map-pins" id="red-map-pins" aria-label="Espacios en mapa"></div>
+          </div>
+          <div class="red-map-body">
+            <b>Mapa del sector por espacio</b>
+            <span class="map-source">Mapa base: © OpenStreetMap contributors / ODbL.</span>
+            <div class="red-map-legend" id="red-map-legend" aria-label="Seleccionar espacio en mapa"></div>
+            <ul>
+              <li><svg class="ic sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg><span>Cómo llegar, metro, estacionamientos y hoteles cercanos.</span></li>
+              <li><svg class="ic sm" viewBox="0 0 24 24"><path d="M4 18h16M6 18V9l6-4 6 4v9"/></svg><span>Gastronomía local y recorrido patrimonial sugerido.</span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+      <div class="red-space-grid" id="red-space-grid" aria-label="Espacios scrapeados desde Red Alameda"></div>
+      <p class="red-inline-help">Selecciona un espacio, por favor, para ver foto, agenda y fuente completa sin salir del MVP.</p>
+      <div class="red-agenda" id="red-agenda" aria-label="Programación scrapeada desde Red Alameda"></div>
+    </section>
   </section>
 
   <!-- ============ MAPA ============ -->
@@ -11366,22 +11370,17 @@
   const WZ_PASOS = [
     { id: "tipo", campo: "tipo", render: () => '<h3>¿Qué evento quieres hacer?</h3><p class="wz-sub">Un tap y seguimos.</p>' +
         chips(["🎉 Fiesta corporativa", "🚀 Lanzamiento", "🍽️ Cena privada", "💍 Matrimonio íntimo", "🎤 Concierto privado", "✨ Otro"], "tipo", true) },
-    { id: "pax", campo: "pax", render: () => '<h3>¿Cuántas personas?</h3><p class="wz-sub">Aproximado — después se afina.</p>' +
-        chips(["Menos de 30", "30–80", "80–150", "150+"], "pax", true) },
-    { id: "fecha", skip: "Aún no tengo fecha", render: () =>
-        '<h3>¿Cuándo sería?</h3><p class="wz-sub">Si eres flexible, mejor: calzan más espacios.</p>' +
-        '<input type="date" id="wz-fecha" value="' + (wz.data.fecha || "") + '" style="font:inherit;padding:10px;border:1.5px solid var(--line,#ddd);border-radius:10px" /> ' +
-        chips(["Soy flexible con la fecha 🗓"], "flex", false) },
+    // ponytail: 7→4 pasos — el matching real solo usa personas+presupuesto; la urgencia la mide
+    // el cierre (partir ahora vs esperar) y las necesidades se afinan con el concierge
+    { id: "pax", campo: "pax", render: () => '<h3>¿Cuántas personas y cuándo?</h3><p class="wz-sub">Aproximado. Si aún no tienes fecha, sigue no más.</p>' +
+        chips(["Menos de 30", "30–80", "80–150", "150+"], "pax", false) +
+        '<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">' +
+        '<input type="date" id="wz-fecha" aria-label="Fecha tentativa" value="' + (wz.data.fecha || "") + '" style="font:inherit;padding:11px;border:1.5px solid var(--line,#ddd);border-radius:10px" />' +
+        chips(["Soy flexible 🗓"], "flex", false) + "</div>" },
     { id: "presupuesto", campo: "presupuesto", skip: "Prefiero que me propongan", render: () =>
         '<h3>¿Presupuesto del evento?</h3>' +
-        '<p class="wz-sub">Grandes eventos en espacios culturales: la producción completa (espacio + técnica + catering) va típicamente de $2M a $10M+ por jornada.</p>' +
+        '<p class="wz-sub">Producción completa (espacio + técnica + catering): típicamente $2M a $10M+ por jornada.</p>' +
         chips(["Menos de $2M", "$2M – $5M", "$5M – $10M", "$10M – $20M", "Más de $20M"], "presupuesto", true) },
-    { id: "necesidades", skip: "Nada especial, continuar", render: () =>
-        '<h3>¿Qué necesita tu evento? <span style="font-weight:400;font-size:13px;color:var(--muted,#667)">(opcional)</span></h3><p class="wz-sub">Marca todo lo que aplique.</p>' +
-        '<div class="wz-chips">' + ["Sonido", "Proyector", "Catering / cocina", "Terraza o exterior", "Accesibilidad", "Estacionamiento"].map((o) =>
-          '<button type="button" data-wz-multi="' + o + '"' + ((wz.data.necesidades || []).includes(o) ? ' class="on"' : '') + '>' + o + '</button>').join("") + '</div>' },
-    { id: "urgencia", campo: "urgencia", render: () => '<h3>¿Qué tan pronto lo necesitas?</h3><p class="wz-sub">Para priorizar tu propuesta.</p>' +
-        chips(["Es urgente 🔥", "Próximas semanas", "Solo estoy mirando"], "urgencia", true) },
     { id: "contacto", render: () => '<h3>Ya casi — ¿a nombre de quién preparamos la propuesta?</h3>' +
         '<p class="wz-sub">Gratis. Solo le pagas al espacio si cierras.</p>' +
         // form + autocomplete: el navegador rellena solo (name/tel/email estándar)
@@ -11412,11 +11411,13 @@
         (wz.paso > 0 ? '<button type="button" class="wz-skip" id="wz-back">← Volver</button>' : "<span></span>") +
         '<span style="display:flex;gap:14px;align-items:center">' +
           (p.skip ? '<button type="button" class="wz-skip" id="wz-skip">' + p.skip + " →</button>" : "") +
-          // paso ya respondido (ej: volviste atrás) → siempre hay camino explícito para avanzar
-          (p.id === "fecha" || p.id === "necesidades" || (p.campo && wz.data[p.campo]) ? '<button type="button" class="btn primary" id="wz-next">Continuar →</button>' : "") +
+          // paso combinado o ya respondido → siempre hay camino explícito para avanzar
+          (p.id === "pax" || (p.campo && wz.data[p.campo]) ? '<button type="button" class="btn primary" id="wz-next">Continuar →</button>' : "") +
         "</span>" +
       "</div>" +
-      '<div class="wz-trust">Así funciona: nos cuentas tu evento → te proponemos 3–5 espacios con tarifas y condiciones reales → tú eliges y nosotros coordinamos. Respuesta en 48 h.</div></div>';
+      // la explicación solo en el paso 1: después es ruido vertical
+      (wz.paso === 0 ? '<div class="wz-trust">Así funciona: nos cuentas tu evento → te proponemos 3–5 espacios con tarifas y condiciones reales → tú eliges y nosotros coordinamos. Respuesta en 48 h.</div>' : "") +
+      "</div>";
     track("wz_paso_" + p.id);
   }
   function wzNext() { if (wz.paso < WZ_PASOS.length - 1) { wz.paso++; wzGuardaCampos(); wzRender(); } }
